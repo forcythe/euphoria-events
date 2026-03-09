@@ -318,7 +318,7 @@ function MasonryTile({ m, i, color, onClick }) {
     return () => observer.disconnect();
   }, [m.type]);
 
-  const heights = [180, 240, 200, 280, 160, 220, 260, 190, 300, 170, 250, 210];
+  const heights = [280, 340, 300, 360, 280, 320, 360, 300, 340, 280, 320, 300];
   const h = heights[i % heights.length];
 
   return (
