@@ -200,11 +200,7 @@ export async function createBookingEvent(booking) {
         { method: 'popup',  minutes: 30 },
       ],
     },
-    // Add the client as an attendee so you can reply directly from the event
-    attendees: [{ email: booking.email, displayName: booking.name }],
-    guestsCanModifyEvent: false,
-    guestsCanInviteOthers: false,
-  };
+    
 
   const res = await fetch(
     `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(GOOGLE_CALENDAR_ID)}/events?sendUpdates=none`,
