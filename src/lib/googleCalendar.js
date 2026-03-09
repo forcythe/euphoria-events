@@ -201,7 +201,7 @@ export async function createBookingEvent(booking) {
       ],
     },
     
-
+ };
   const res = await fetch(
     `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(GOOGLE_CALENDAR_ID)}/events?sendUpdates=none`,
     {
