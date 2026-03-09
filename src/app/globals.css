@@ -1,0 +1,137 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --font-bebas: 'Bebas Neue', cursive;
+  --font-dm: 'DM Sans', sans-serif;
+  --pink: #FF3CAC;
+  --gold: #FFD700;
+  --cyan: #00F5FF;
+  --green: #39FF14;
+  --bg: #08010F;
+}
+
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: #fff; font-family: var(--font-dm); overflow-x: hidden; }
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--pink); border-radius: 4px; }
+
+/* ── KEYFRAMES ─────────────────────────────────────────────────────── */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes kenBurns {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.07) translate(-1%, -0.5%); }
+  100% { transform: scale(1); }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(60px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes typewriterCursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* ── UTILITY ───────────────────────────────────────────────────────── */
+.fade-up { animation: fadeUp 0.65s ease both; }
+
+.btn-glow {
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+.btn-glow:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 40px rgba(255, 60, 172, 0.45);
+}
+
+/* ── SERVICE CARDS ─────────────────────────────────────────────────── */
+.svc-card { transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; }
+.svc-card:hover { transform: translateY(-6px); }
+.svc-card .svc-img { transition: transform 0.55s ease; }
+.svc-card:hover .svc-img { transform: scale(1.08); }
+
+/* ── PACKAGE CARDS ─────────────────────────────────────────────────── */
+.pkg-card { transition: transform 0.3s ease; }
+.pkg-card:hover { transform: translateY(-8px); }
+
+/* ── GALLERY TILES ─────────────────────────────────────────────────── */
+.gal-tile {
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+  border-radius: 20px;
+}
+.gal-tile img {
+  transition: transform 0.5s ease;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.gal-tile:hover img { transform: scale(1.08); }
+
+/* ── MODAL THUMBS ──────────────────────────────────────────────────── */
+.modal-thumb {
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 12px;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+.modal-thumb:hover { transform: scale(1.04); box-shadow: 0 8px 32px rgba(0,0,0,0.5); }
+.modal-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+.modal-thumb:hover img { transform: scale(1.06); }
+
+/* ── FORM ──────────────────────────────────────────────────────────── */
+input:focus, textarea:focus { border-color: var(--pink) !important; outline: none; }
+
+/* ── RESPONSIVE MOBILE ─────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .nav-links { display: none !important; }
+  .hamburger { display: flex !important; align-items: center !important; justify-content: center !important; }
+
+  .hero-buttons { flex-direction: column !important; align-items: stretch !important; gap: 10px !important; }
+  .hero-buttons button { width: 100% !important; text-align: center !important; }
+
+  .stats-bar { width: 100% !important; max-width: 100% !important; flex-shrink: 1 !important; overflow: hidden !important; border-radius: 14px !important; }
+  .stats-bar > div { padding: 0 8px !important; }
+  .stat-value { font-size: 22px !important; }
+  .stat-label { font-size: 7px !important; letter-spacing: 0.1em !important; }
+
+  .gallery-grid { grid-template-columns: 1fr !important; grid-auto-rows: 180px !important; }
+  .gallery-grid > div { grid-column: span 1 !important; }
+
+  .services-grid { grid-template-columns: 1fr !important; }
+  .packages-grid { grid-template-columns: 1fr !important; }
+  .booking-grid  { grid-template-columns: 1fr !important; gap: 24px !important; }
+
+  .footer-grid   { grid-template-columns: 1fr !important; gap: 28px !important; }
+  .footer-bottom { flex-direction: column !important; gap: 10px !important; align-items: flex-start !important; }
+
+  .pkg-modal-body { grid-template-columns: 1fr !important; }
+}
+@media (max-width: 480px) {
+  .stat-value { font-size: 20px !important; }
+  .stat-label { font-size: 6px !important; }
+}
