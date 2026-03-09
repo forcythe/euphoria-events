@@ -75,7 +75,7 @@ function formatDate(dateStr) {
 
 // ── 1. Client confirmation email ─────────────────────────────────────
 
-function clientEmailHTML({ name, date, eventType, venue, services, phone }) {
+function clientEmailHTML({ name, date, eventType, venue, services, phone, notes }) {
   const serviceItems = (services || []).map(s => `<span class="pill">${s}</span>`).join('');
 
   return `<!DOCTYPE html>
@@ -125,6 +125,10 @@ function clientEmailHTML({ name, date, eventType, venue, services, phone }) {
         <span class="row-label">📦 Services</span>
         <span class="row-value">${serviceItems}</span>
       </div>` : ''}
+      ${notes ? `<div class="row">
+        <span class="row-label">📝 Notes</span>
+        <span class="row-value" style="font-style:italic;color:rgba(255,255,255,.7);">${notes}</span>
+      </div>` : ''}
     </div>
 
     <div class="cta-block">
@@ -157,6 +161,7 @@ function clientEmailHTML({ name, date, eventType, venue, services, phone }) {
 
 function ownerEmailHTML({ name, email, phone, date, eventType, venue, notes, services, calEventLink }) {
   const serviceItems = (services || []).map(s => `<span class="pill">${s}</span>`).join('');
+  const replySubject = encodeURIComponent(`Re: Your Euphoria Events Booking — ${formatDate(date)}`);
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -217,7 +222,7 @@ function ownerEmailHTML({ name, email, phone, date, eventType, venue, notes, ser
     </div>
 
     <div class="cta-block" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-      <a href="mailto:${email}?subject=Re: Your Euphoria Events Booking — ${formatDate(date)}&body=Hi ${name.split(' ')[0]},%0A%0AThank you for your booking request..." class="cta-btn" style="background:linear-gradient(135deg,#FF3CAC,#784BA0);">
+      <a href="mailto:${email}?subject=${replySubject}" class="cta-btn" style="background:linear-gradient(135deg,#FF3CAC,#784BA0);">
         Reply to Client →
       </a>
       ${calEventLink ? `<a href="${calEventLink}" class="cta-btn" style="background:linear-gradient(135deg,#00F5FF,#0057FF);color:#000;">
@@ -246,10 +251,6 @@ function ownerEmailHTML({ name, email, phone, date, eventType, venue, notes, ser
 
 // ── Public: send both emails ──────────────────────────────────────────
 
-/**
- * Send confirmation to client + notification to owner.
- * Errors are logged but do NOT throw — we don't want email failure to break the booking.
- */
 export async function sendBookingEmails({ booking, calEventLink }) {
   const { name, email, phone, date, eventType, venue, notes, services } = booking;
   const results = { client: null, owner: null, errors: [] };
@@ -261,7 +262,7 @@ export async function sendBookingEmails({ booking, calEventLink }) {
       to:      email,
       replyTo: NOTIFY_EMAIL,
       subject: `🎉 Booking Request Received — ${formatDate(date)}`,
-      html:    clientEmailHTML({ name, date, eventType, venue, services, phone }),
+      html:    clientEmailHTML({ name, date, eventType, venue, services, phone, notes }),
     });
   } catch (err) {
     console.error('[resend] Client email failed:', err.message);

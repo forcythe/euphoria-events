@@ -330,18 +330,28 @@ function GalleryModal({ galleryId, onClose }) {
           <button onClick={onClose} aria-label="Close gallery"
             style={{ width: 40, height: 40, borderRadius: '50%', background: 'rgba(255,255,255,.1)', border: '1px solid rgba(255,255,255,.2)', color: '#fff', fontSize: 18, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginLeft: 12 }}>✕</button>
         </div>
-        {/* Film-reel grid — vertical portrait rectangles, 4 columns */}
+        {/* Instagram-style 3-col grid — videos show play icon */}
         <div style={{ flex: 1, overflowY: 'auto', padding: '16px 20px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 10 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 6 }}>
             {gallery.media.map((m, i) => (
               <div key={i} onClick={() => setLbIdx(i)}
-                style={{ aspectRatio: '2 / 3', borderRadius: 12, overflow: 'hidden', cursor: 'pointer', position: 'relative', background: 'rgba(255,255,255,.04)', border: `1px solid ${gallery.color}18` }}>
-                <img src={m.url} alt={m.caption}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transition: 'transform .3s' }}
-                  onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'}
-                  onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
-                  loading={i < 6 ? 'eager' : 'lazy'} />
-                <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '20px 10px 8px', background: 'linear-gradient(to top, rgba(8,1,15,.8) 0%, transparent 100%)', fontSize: 10, color: 'rgba(255,255,255,.7)', fontWeight: 600, letterSpacing: '0.05em' }}>{m.caption}</div>
+                style={{ aspectRatio: '2 / 3', borderRadius: 8, overflow: 'hidden', cursor: 'pointer', position: 'relative', background: 'rgba(255,255,255,.04)', border: `1px solid ${gallery.color}18` }}>
+                {m.type === 'video' ? (
+                  <>
+                    <video src={m.url} muted playsInline preload="metadata"
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                    <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(8,1,15,.35)' }}>
+                      <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'rgba(8,1,15,.75)', backdropFilter: 'blur(8px)', border: `1px solid ${gallery.color}66`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, color: gallery.color }}>▶</div>
+                    </div>
+                  </>
+                ) : (
+                  <img src={m.url} alt={m.caption}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transition: 'transform .3s' }}
+                    onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'}
+                    onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+                    loading={i < 6 ? 'eager' : 'lazy'} />
+                )}
+                <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '16px 8px 6px', background: 'linear-gradient(to top, rgba(8,1,15,.85) 0%, transparent 100%)', fontSize: 9, color: 'rgba(255,255,255,.7)', fontWeight: 600, letterSpacing: '0.05em', lineHeight: 1.3 }}>{m.caption}</div>
               </div>
             ))}
           </div>
@@ -367,10 +377,15 @@ function GalleryModal({ galleryId, onClose }) {
             {/* Prev */}
             <button onClick={() => setLbIdx(i => (i - 1 + gallery.media.length) % gallery.media.length)} aria-label="Previous image"
               style={{ position: 'absolute', left: 16, background: 'rgba(255,255,255,.1)', border: '1px solid rgba(255,255,255,.2)', color: '#fff', width: 44, height: 44, borderRadius: '50%', fontSize: 22, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>‹</button>
-            {/* Image + caption */}
+            {/* Image or Video + caption */}
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, maxWidth: '85vw' }}>
-              <img src={gallery.media[lbIdx].url} alt={gallery.media[lbIdx].caption}
-                style={{ maxWidth: '100%', maxHeight: '78vh', borderRadius: 16, objectFit: 'contain', animation: 'scaleIn .25s ease', boxShadow: '0 24px 80px rgba(0,0,0,.8)' }} />
+              {gallery.media[lbIdx].type === 'video' ? (
+                <video src={gallery.media[lbIdx].url} controls autoPlay playsInline
+                  style={{ maxWidth: '100%', maxHeight: '78vh', borderRadius: 16, objectFit: 'contain', boxShadow: '0 24px 80px rgba(0,0,0,.8)', background: '#000' }} />
+              ) : (
+                <img src={gallery.media[lbIdx].url} alt={gallery.media[lbIdx].caption}
+                  style={{ maxWidth: '100%', maxHeight: '78vh', borderRadius: 16, objectFit: 'contain', animation: 'scaleIn .25s ease', boxShadow: '0 24px 80px rgba(0,0,0,.8)' }} />
+              )}
               <p style={{ color: 'rgba(255,255,255,.6)', fontSize: 13, margin: 0 }}>{gallery.media[lbIdx].caption} · {lbIdx + 1} / {gallery.media.length}</p>
             </div>
             {/* Next */}
@@ -669,25 +684,36 @@ export default function HomePage() {
               <h2 style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(38px,6vw,70px)', letterSpacing: '0.05em' }}>THE EUPHORIA EFFECT</h2>
               <p style={{ color: 'rgba(255,255,255,.4)', marginTop: 10, fontSize: 15 }}>Step inside the moments that mattered. Relive the experience.</p>
             </div>
-            <div className="gallery-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gridAutoRows: '240px', gap: 14 }}>
+            <style>{`
+              .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: 280px; gap: 14px; }
+              @media (max-width: 700px) {
+                .gallery-grid { grid-template-columns: repeat(2, 1fr) !important; grid-auto-rows: 200px !important; }
+                .gal-tile { grid-column: span 1 !important; }
+              }
+            `}</style>
+            <div className="gallery-grid">
               {GALLERY_TILES.map(tile => {
                 const gallery = GALLERIES[tile.id];
                 const hov = hovGal === tile.id;
+                const videoCount = gallery.media.filter(m => m.type === 'video').length;
                 return (
                   <article key={tile.id} className="gal-tile"
                     onMouseEnter={() => setHovGal(tile.id)} onMouseLeave={() => setHovGal(null)}
                     onClick={() => setActiveGallery(tile.id)}
-                    style={{ gridColumn: `span ${tile.span}`, border: `1px solid ${gallery.color}28`, cursor: 'pointer' }}
+                    style={{ gridColumn: `span ${tile.span}`, border: `1px solid ${gallery.color}28`, cursor: 'pointer', borderRadius: 18, overflow: 'hidden', position: 'relative', background: '#0c0119' }}
                     role="button" tabIndex={0} aria-label={`View ${gallery.label} gallery`}
                     onKeyDown={e => e.key === 'Enter' && setActiveGallery(tile.id)}>
-                    <img src={gallery.cover} alt={`${gallery.label} — Euphoria Events`} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} loading="lazy" />
-                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top,rgba(8,1,15,.88) 0%,rgba(8,1,15,.2) 55%,transparent 100%)' }} />
-                    <div style={{ position: 'absolute', inset: 0, background: `${gallery.color}20`, opacity: hov ? 1 : 0, transition: 'opacity .35s' }} />
+                    <img src={gallery.cover} alt={`${gallery.label} — Euphoria Events`} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', transition: 'transform .5s ease', transform: hov ? 'scale(1.05)' : 'scale(1)' }} loading="lazy" />
+                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top,rgba(8,1,15,.92) 0%,rgba(8,1,15,.2) 55%,transparent 100%)' }} />
+                    <div style={{ position: 'absolute', inset: 0, background: `${gallery.color}18`, opacity: hov ? 1 : 0, transition: 'opacity .35s' }} />
                     <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '18px 20px 16px' }}>
                       <div style={{ display: 'inline-block', fontSize: 10, color: gallery.color, letterSpacing: '0.18em', textTransform: 'uppercase', background: `${gallery.color}22`, border: `1px solid ${gallery.color}44`, padding: '3px 12px', borderRadius: 20, marginBottom: 7 }}>{gallery.tag}</div>
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, flexWrap: 'wrap' }}>
                         <div style={{ fontFamily: 'var(--font-bebas)', fontSize: tile.span === 2 ? 24 : 19, letterSpacing: 2 }}>{gallery.label}</div>
-                        <div style={{ fontSize: 11, color: 'rgba(255,255,255,.45)', background: 'rgba(8,1,15,.5)', padding: '2px 10px', borderRadius: 20 }}>{gallery.media.length} photos</div>
+                        <div style={{ display: 'flex', gap: 6 }}>
+                          <div style={{ fontSize: 11, color: 'rgba(255,255,255,.45)', background: 'rgba(8,1,15,.6)', padding: '2px 10px', borderRadius: 20 }}>{gallery.media.length} items</div>
+                          {videoCount > 0 && <div style={{ fontSize: 11, color: gallery.color, background: `${gallery.color}22`, padding: '2px 10px', borderRadius: 20 }}>▶ {videoCount} videos</div>}
+                        </div>
                       </div>
                     </div>
                     <div style={{ position: 'absolute', top: '38%', left: '50%', transform: `translate(-50%,-50%) translateY(${hov ? 0 : 10}px)`, opacity: hov ? 1 : 0, transition: 'all .3s', background: 'rgba(8,1,15,.85)', backdropFilter: 'blur(12px)', padding: '10px 24px', borderRadius: 30, fontSize: 14, fontWeight: 700, border: `1px solid ${gallery.color}55`, whiteSpace: 'nowrap', color: gallery.color }}>

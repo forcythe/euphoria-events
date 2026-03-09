@@ -187,7 +187,9 @@ export const GALLERIES = {
     label: "Wedding Reception", color: "#FFD700", tag: "Smile Booth",
     cover: "https://images.unsplash.com/photo-1519741497674-611481863552?w=1200&q=80",
     media: [
+      { url: "https://res.cloudinary.com/dhahjsrtn/video/upload/v1773063038/Euphoria%20Events/Wedding_lboalb.mp4", caption: "Wedding highlights", type: "video" },
       { url: "https://images.unsplash.com/photo-1519741497674-611481863552?w=1200&q=80", caption: "The happy couple" },
+      { url: "https://res.cloudinary.com/dhahjsrtn/video/upload/v1773062669/Euphoria%20Events/wedding_reception_fyhbvu.mp4", caption: "Reception moments", type: "video" },
       { url: "https://images.unsplash.com/photo-1460978812857-470ed1c77af0?w=1200&q=80", caption: "Booth fun" },
       { url: "https://images.unsplash.com/photo-1529636798458-92182e662485?w=1200&q=80", caption: "Reception glow" },
       { url: "https://images.unsplash.com/photo-1537633552985-df8429e8048b?w=1200&q=80", caption: "Smiles all round" },
@@ -199,26 +201,28 @@ export const GALLERIES = {
     label: "Corporate Gala Night", color: "#00F5FF", tag: "Videography",
     cover: "https://images.unsplash.com/photo-1511578314322-379afb476865?w=1200&q=80",
     media: [
+      { url: "https://res.cloudinary.com/dhahjsrtn/video/upload/v1773063421/Euphoria%20Events/Gala_v3mwjq.mp4", caption: "Gala night highlights", type: "video" },
       { url: "https://images.unsplash.com/photo-1511578314322-379afb476865?w=1200&q=80", caption: "Gala evening" },
       { url: "https://images.unsplash.com/photo-1576633587382-13ddf37b1fc1?w=1200&q=80", caption: "Behind the lens" },
       { url: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=1200&q=80", caption: "Keynote moment" },
       { url: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=1200&q=80", caption: "Awards night" },
       { url: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=1200&q=80", caption: "Team celebration" },
       { url: "https://images.unsplash.com/photo-1543269865-cbf427effbad?w=1200&q=80", caption: "Candid laughter" },
-      { url: "https://images.unsplash.com/photo-1522158637959-30385a09e0da?w=1200&q=80", caption: "Networking highlights" },
+      { url: "https://res.cloudinary.com/dhahjsrtn/video/upload/v1773062615/Euphoria%20Events/Greenspring_PTA_Meeting_skorc5.mp4", caption: "School PTA event", type: "video" },
     ],
   },
   4: {
     label: "Birthday Bash", color: "#FF6B35", tag: "Guestbook",
     cover: "https://images.unsplash.com/photo-1464349153735-7db50ed83c84?w=1200&q=80",
     media: [
+      { url: "https://res.cloudinary.com/dhahjsrtn/video/upload/v1773063398/Euphoria%20Events/60th_Birthday_dot0b3.mp4", caption: "60th birthday celebration", type: "video" },
       { url: "https://images.unsplash.com/photo-1464349153735-7db50ed83c84?w=1200&q=80", caption: "Let the party begin" },
       { url: "https://images.unsplash.com/photo-1531058020387-3be344556be6?w=1200&q=80", caption: "Cake moment" },
+      { url: "https://res.cloudinary.com/dhahjsrtn/video/upload/v1773062670/Euphoria%20Events/50th%20birthday.mp4", caption: "50th birthday party", type: "video" },
       { url: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=80", caption: "Making wishes" },
       { url: "https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=1200&q=80", caption: "Birthday glow" },
       { url: "https://images.unsplash.com/photo-1478147427282-58a87a702b70?w=1200&q=80", caption: "Video messages" },
       { url: "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=1200&q=80", caption: "Dance floor" },
-      { url: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=1200&q=80", caption: "Confetti moment" },
       { url: "https://images.unsplash.com/photo-1523438885200-e635ba2c371e?w=1200&q=80", caption: "Friends forever" },
     ],
   },
@@ -256,9 +260,9 @@ export const SERVICE_IMAGES = {
 };
 
 export const HERO_IMAGES = [
-  "/hero-1.jpg",  // Friends celebrating with confetti, balloons, warm lights
-  "/hero-2.jpg",  // Wedding couple dancing at night, crowd cheering with phones
-  "/hero-3.jpg",  // First dance with sparklers, guests watching, elegant venue
+  "/hero-1.jpg",
+  "/hero-2.jpg",
+  "/hero-3.jpg",
 ];
 
 export const FAQS = [
