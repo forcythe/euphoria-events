@@ -298,6 +298,47 @@ function TermsModal({ page, onClose }) {
   );
 }
 
+// ─── MASONRY TILE ────────────────────────────────────────────────────
+function MasonryTile({ m, i, color, onClick }) {
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    if (m.type !== 'video' || !videoRef.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          videoRef.current?.play().catch(() => {});
+        } else {
+          videoRef.current?.pause();
+        }
+      },
+      { threshold: 0.4 }
+    );
+    observer.observe(videoRef.current);
+    return () => observer.disconnect();
+  }, [m.type]);
+
+  const heights = [180, 240, 200, 280, 160, 220, 260, 190, 300, 170, 250, 210];
+  const h = heights[i % heights.length];
+
+  return (
+    <div onClick={onClick}
+      style={{ breakInside: 'avoid', marginBottom: 6, borderRadius: 10, overflow: 'hidden', cursor: 'pointer', position: 'relative', background: 'rgba(255,255,255,.04)', border: `1px solid ${color}18`, height: h, display: 'block' }}>
+      {m.type === 'video' ? (
+        <video ref={videoRef} src={m.url} muted playsInline loop preload="metadata"
+          style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+      ) : (
+        <img src={m.url} alt={m.caption}
+          style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transition: 'transform .3s' }}
+          onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'}
+          onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+          loading={i < 6 ? 'eager' : 'lazy'} />
+      )}
+      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '20px 8px 6px', background: 'linear-gradient(to top, rgba(8,1,15,.85) 0%, transparent 100%)', fontSize: 9, color: 'rgba(255,255,255,.7)', fontWeight: 600, letterSpacing: '0.05em', lineHeight: 1.3 }}>{m.caption}</div>
+    </div>
+  );
+}
+
 // ─── GALLERY MODAL ────────────────────────────────────────────────────
 function GalleryModal({ galleryId, onClose }) {
   const gallery = GALLERIES[galleryId];
@@ -330,29 +371,11 @@ function GalleryModal({ galleryId, onClose }) {
           <button onClick={onClose} aria-label="Close gallery"
             style={{ width: 40, height: 40, borderRadius: '50%', background: 'rgba(255,255,255,.1)', border: '1px solid rgba(255,255,255,.2)', color: '#fff', fontSize: 18, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginLeft: 12 }}>✕</button>
         </div>
-        {/* Instagram-style 3-col grid — videos show play icon */}
+        {/* Masonry brick grid — 3 cols, varying heights, videos autoplay in view */}
         <div style={{ flex: 1, overflowY: 'auto', padding: '16px 20px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 6 }}>
+          <div style={{ columns: 3, columnGap: 6 }}>
             {gallery.media.map((m, i) => (
-              <div key={i} onClick={() => setLbIdx(i)}
-                style={{ aspectRatio: '2 / 3', borderRadius: 8, overflow: 'hidden', cursor: 'pointer', position: 'relative', background: 'rgba(255,255,255,.04)', border: `1px solid ${gallery.color}18` }}>
-                {m.type === 'video' ? (
-                  <>
-                    <video src={m.url} muted playsInline preload="metadata"
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
-                    <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(8,1,15,.35)' }}>
-                      <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'rgba(8,1,15,.75)', backdropFilter: 'blur(8px)', border: `1px solid ${gallery.color}66`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, color: gallery.color }}>▶</div>
-                    </div>
-                  </>
-                ) : (
-                  <img src={m.url} alt={m.caption}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transition: 'transform .3s' }}
-                    onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'}
-                    onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
-                    loading={i < 6 ? 'eager' : 'lazy'} />
-                )}
-                <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '16px 8px 6px', background: 'linear-gradient(to top, rgba(8,1,15,.85) 0%, transparent 100%)', fontSize: 9, color: 'rgba(255,255,255,.7)', fontWeight: 600, letterSpacing: '0.05em', lineHeight: 1.3 }}>{m.caption}</div>
-              </div>
+              <MasonryTile key={i} m={m} i={i} color={gallery.color} onClick={() => setLbIdx(i)} />
             ))}
           </div>
         </div>
