@@ -1061,10 +1061,10 @@ export default function HomePage() {
                 { label: 'WhatsApp',  icon: '/icon-whatsapp.png',  href: BRAND.socials.whatsapp },
               ].map(({ label, icon, href }) => (
                 <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={`Follow us on ${label}`}
-                  style={{ width: 40, height: 40, borderRadius: '50%', background: 'rgba(255,255,255,.05)', border: '1px solid rgba(255,255,255,.09)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', textDecoration: 'none', overflow: 'hidden', transition: 'transform .2s, box-shadow .2s' }}
-                  onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.12)'; e.currentTarget.style.boxShadow = '0 4px 18px rgba(255,60,172,.35)'; }}
-                  onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.boxShadow = 'none'; }}>
-                  <img src={icon} alt={label} width={28} height={28} style={{ display: 'block' }} />
+                  style={{ display: 'inline-block', cursor: 'pointer', textDecoration: 'none', transition: 'transform .2s, filter .2s' }}
+                  onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.12)'; e.currentTarget.style.filter = 'drop-shadow(0 4px 10px rgba(255,60,172,.5))'; }}
+                  onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.filter = 'none'; }}>
+                  <img src={icon} alt={label} width={44} height={44} style={{ display: 'block' }} />
                 </a>
               ))}
             </div>
