@@ -10,10 +10,10 @@ export const BRAND = {
   phone: "+234 703 856 5517",
   address: "Lagos, Nigeria",
   socials: {
-    instagram: "https://instagram.com/euphoria.events",
-    tiktok: "https://tiktok.com/@euphoria.events",
-    facebook: "https://facebook.com/euphoriaevents",
-    youtube: "https://youtube.com/@euphoriaevents",
+    instagram: "https://instagram.com/euphoria.eventsng",
+    tiktok: "https://tiktok.com/@euphoria.eventsng",
+    facebook: "https://facebook.com/euphoria.eventsng",
+    youtube: "https://youtube.com/@euphoria.eventsng",
     whatsapp: "https://wa.me/2347038565517",
   },
 };

@@ -1054,11 +1054,11 @@ export default function HomePage() {
             <p style={{ color: 'rgba(255,255,255,.38)', fontSize: 13.5, lineHeight: 1.8, maxWidth: 260 }}>{BRAND.description}</p>
             <div style={{ display: 'flex', gap: 10, marginTop: 18, flexWrap: 'wrap' }}>
               {[
-                { label: 'Instagram', icon: '/icon-instagram.gif', href: BRAND.socials.instagram },
-                { label: 'TikTok',    icon: '/icon-tiktok.gif',    href: BRAND.socials.tiktok },
-                { label: 'Facebook',  icon: '/icon-facebook.gif',  href: BRAND.socials.facebook },
-                { label: 'YouTube',   icon: '/icon-youtube.gif',   href: BRAND.socials.youtube },
-                { label: 'WhatsApp',  icon: '/icon-whatsapp.gif',  href: BRAND.socials.whatsapp },
+                { label: 'Instagram', icon: '/icon-instagram.png', href: BRAND.socials.instagram },
+                { label: 'TikTok',    icon: '/icon-tiktok.png',    href: BRAND.socials.tiktok },
+                { label: 'Facebook',  icon: '/icon-facebook.png',  href: BRAND.socials.facebook },
+                { label: 'YouTube',   icon: '/icon-youtube.png',   href: BRAND.socials.youtube },
+                { label: 'WhatsApp',  icon: '/icon-whatsapp.png',  href: BRAND.socials.whatsapp },
               ].map(({ label, icon, href }) => (
                 <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={`Follow us on ${label}`}
                   style={{ width: 40, height: 40, borderRadius: '50%', background: 'rgba(255,255,255,.05)', border: '1px solid rgba(255,255,255,.09)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', textDecoration: 'none', overflow: 'hidden', transition: 'transform .2s, box-shadow .2s' }}
