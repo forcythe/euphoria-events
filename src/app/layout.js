@@ -1,4 +1,5 @@
 import { Bebas_Neue, DM_Sans } from 'next/font/google';
+import Script from 'next/script';
 import { BRAND, LD_ORGANIZATION, LD_FAQ, LD_SERVICES } from '@/lib/data';
 import './globals.css';
 
@@ -86,6 +87,13 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en-NG" className={`${bebasNeue.variable} ${dmSans.variable}`}>
       <head>
+        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-G5GH95X2B6" strategy="afterInteractive" />
+        <Script id="google-analytics" strategy="afterInteractive">{`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-G5GH95X2B6');
+        `}</Script>
         {/* Structured Data — Organization */}
         <script
           type="application/ld+json"
