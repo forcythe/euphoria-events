@@ -228,14 +228,14 @@ export const GALLERIES = {
   },
   5: {
     label: "Graduation Celebration", color: "#39FF14", tag: "360 Booth",
-    cover: "https://images.unsplash.com/photo-1627556704302-624286467c65?w=1200&q=80",
+    cover: "/graduation-ceremony.jpg",
     media: [
-      { url: "https://images.unsplash.com/photo-1627556704302-624286467c65?w=1200&q=80", caption: "Cap toss" },
-      { url: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1200&q=80", caption: "The big day" },
-      { url: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1200&q=80", caption: "Class of 2025" },
-      { url: "https://images.unsplash.com/photo-1606761568499-6d2451b23c66?w=1200&q=80", caption: "Celebration time" },
-      { url: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&q=80", caption: "360° victory lap" },
-      { url: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1200&q=80", caption: "Party after" },
+      { url: "https://res.cloudinary.com/dhahjsrtn/video/upload/v1773152112/Euphoria%20Events/NXU_Graduation_jf9zlo.mp4", caption: "Graduation highlights", type: "video" },
+      { url: "/graduation-ceremony.jpg", caption: "Graduation ceremony" },
+      { url: "/graduand.jpg", caption: "Proud graduand" },
+      { url: "/graduation-party.jpg", caption: "Graduation party" },
+      { url: "/graduation-portrait.jpg", caption: "Graduation portrait" },
+      { url: "/kids-graduation.jpg", caption: "Young graduates" },
     ],
   },
   6: {
