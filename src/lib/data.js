@@ -213,17 +213,15 @@ export const GALLERIES = {
   },
   4: {
     label: "Birthday Bash", color: "#FF6B35", tag: "Guestbook",
-    cover: "https://images.unsplash.com/photo-1464349153735-7db50ed83c84?w=1200&q=80",
+    cover: "/happy-birthday.jpg",
     media: [
       { url: "https://res.cloudinary.com/dhahjsrtn/video/upload/v1773063398/Euphoria%20Events/60th_Birthday_dot0b3.mp4", caption: "60th birthday celebration", type: "video" },
-      { url: "https://images.unsplash.com/photo-1464349153735-7db50ed83c84?w=1200&q=80", caption: "Let the party begin" },
-      { url: "https://images.unsplash.com/photo-1531058020387-3be344556be6?w=1200&q=80", caption: "Cake moment" },
       { url: "https://res.cloudinary.com/dhahjsrtn/video/upload/v1773062670/Euphoria%20Events/50th%20birthday.mp4", caption: "50th birthday party", type: "video" },
-      { url: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=80", caption: "Making wishes" },
-      { url: "https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=1200&q=80", caption: "Birthday glow" },
-      { url: "https://images.unsplash.com/photo-1478147427282-58a87a702b70?w=1200&q=80", caption: "Video messages" },
-      { url: "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=1200&q=80", caption: "Dance floor" },
-      { url: "https://images.unsplash.com/photo-1523438885200-e635ba2c371e?w=1200&q=80", caption: "Friends forever" },
+      { url: "/becky-at-one.jpg", caption: "Becky turns one" },
+      { url: "/happy-birthday.jpg", caption: "Happy birthday setup" },
+      { url: "/birthday-table-decor.jpg", caption: "Birthday table decor" },
+      { url: "/birthday-table-flower.jpg", caption: "Floral table arrangement" },
+      { url: "/50th-birthday-cake.jpg", caption: "50th birthday neon" },
     ],
   },
   5: {
