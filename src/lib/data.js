@@ -185,16 +185,13 @@ export const GALLERIES = {
   },
   2: {
     label: "Wedding Reception", color: "#FFD700", tag: "Smile Booth",
-    cover: "https://images.unsplash.com/photo-1519741497674-611481863552?w=1200&q=80",
+    cover: "https://res.cloudinary.com/dhahjsrtn/image/upload/v1773264400/Euphoria%20Events/PXL_20241130_161918346.PORTRAIT.ORIGINAL_pmrfml.jpg",
     media: [
-      { url: "https://res.cloudinary.com/dhahjsrtn/video/upload/v1773063038/Euphoria%20Events/Wedding_lboalb.mp4", caption: "Wedding highlights", type: "video" },
-      { url: "https://images.unsplash.com/photo-1519741497674-611481863552?w=1200&q=80", caption: "The happy couple" },
-      { url: "https://res.cloudinary.com/dhahjsrtn/video/upload/v1773062669/Euphoria%20Events/wedding_reception_fyhbvu.mp4", caption: "Reception moments", type: "video" },
-      { url: "https://images.unsplash.com/photo-1460978812857-470ed1c77af0?w=1200&q=80", caption: "Booth fun" },
-      { url: "https://images.unsplash.com/photo-1529636798458-92182e662485?w=1200&q=80", caption: "Reception glow" },
-      { url: "https://images.unsplash.com/photo-1537633552985-df8429e8048b?w=1200&q=80", caption: "Smiles all round" },
-      { url: "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=1200&q=80", caption: "First dance" },
-      { url: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=1200&q=80", caption: "Forever captured" },
+      { url: "https://res.cloudinary.com/dhahjsrtn/video/upload/v1773266181/Euphoria%20Events/PXL_20241130_150920897_w5yc2w.mp4", caption: "Wedding reception highlights", type: "video" },
+      { url: "https://res.cloudinary.com/dhahjsrtn/video/upload/v1773266088/Euphoria%20Events/PXL_20241130_170141105_wfyauu.mp4", caption: "Reception dance floor", type: "video" },
+      { url: "https://res.cloudinary.com/dhahjsrtn/image/upload/v1773264402/Euphoria%20Events/PXL_20220423_144427346.PORTRAIT_fgw5j5.jpg", caption: "Bride & groom portrait" },
+      { url: "https://res.cloudinary.com/dhahjsrtn/image/upload/v1773264400/Euphoria%20Events/PXL_20241130_161918346.PORTRAIT.ORIGINAL_pmrfml.jpg", caption: "Reception moments" },
+      { url: "https://res.cloudinary.com/dhahjsrtn/image/upload/v1773264395/Euphoria%20Events/PXL_20241130_171434274_btdq7x.jpg", caption: "Celebrating love" },
     ],
   },
   3: {
