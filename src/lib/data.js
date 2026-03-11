@@ -199,14 +199,14 @@ export const GALLERIES = {
   },
   3: {
     label: "Corporate Gala Night", color: "#00F5FF", tag: "Videography",
-    cover: "/gala-crowd.jpg",
+    cover: "https://res.cloudinary.com/dhahjsrtn/image/upload/v1773264211/Euphoria%20Events/BOS_7976_ottdia.jpg",
     media: [
       { url: "https://res.cloudinary.com/dhahjsrtn/video/upload/v1773063421/Euphoria%20Events/Gala_v3mwjq.mp4", caption: "Gala night highlights", type: "video" },
       { url: "https://res.cloudinary.com/dhahjsrtn/video/upload/v1773062615/Euphoria%20Events/Greenspring_PTA_Meeting_skorc5.mp4", caption: "School PTA event", type: "video" },
-      { url: "/gala-crowd.jpg", caption: "Gala night crowd" },
-      { url: "/gala-host.jpg", caption: "Gala host" },
-      { url: "/gala-table.jpg", caption: "Gala table setup" },
-      { url: "/gala-party.jpg", caption: "Gala party vibes" },
+      { url: "https://res.cloudinary.com/dhahjsrtn/image/upload/v1773264211/Euphoria%20Events/BOS_7976_ottdia.jpg", caption: "Gala night crowd" },
+      { url: "https://res.cloudinary.com/dhahjsrtn/image/upload/v1773264196/Euphoria%20Events/BOS_8044_syvazu.jpg", caption: "Gala host" },
+      { url: "https://res.cloudinary.com/dhahjsrtn/image/upload/v1773264211/Euphoria%20Events/BOS_7816_vpoohv.jpg", caption: "Gala table setup" },
+      { url: "https://res.cloudinary.com/dhahjsrtn/image/upload/v1773265341/Euphoria%20Events/BOS_1_zcfjyi.jpg", caption: "Gala party vibes" },
     ],
   },
   4: {
