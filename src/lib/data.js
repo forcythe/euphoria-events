@@ -171,16 +171,13 @@ export const GALLERY_TILES = [
 export const GALLERIES = {
   1: {
     label: "360° Slow-Mo Magic", color: "#FF3CAC", tag: "360 Booth",
-    cover: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&q=80",
+    cover: "https://res.cloudinary.com/dhahjsrtn/image/upload/v1773264395/Euphoria%20Events/PXL_20241130_171434274_btdq7x.jpg",
     media: [
-      { url: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&q=80", caption: "The spin begins" },
-      { url: "https://images.unsplash.com/photo-1598387993281-cecf8b71a8f8?w=1200&q=80", caption: "360° magic in action" },
-      { url: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1200&q=80", caption: "Crowd energy" },
-      { url: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=1200&q=80", caption: "Neon night spin" },
-      { url: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=1200&q=80", caption: "Festival vibes" },
-      { url: "https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=1200&q=80", caption: "Late night sessions" },
-      { url: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=1200&q=80", caption: "Showtime" },
-      { url: "https://images.unsplash.com/photo-1504680177321-2e6a879aac86?w=1200&q=80", caption: "Epic captures" },
+      { url: "https://res.cloudinary.com/dhahjsrtn/video/upload/v1773148190/Euphoria%20Events/Bridal_Shower_p1bbwh.mp4", caption: "Bridal shower 360° spin", type: "video" },
+      { url: "https://res.cloudinary.com/dhahjsrtn/video/upload/v1773063038/Euphoria%20Events/Wedding_lboalb.mp4", caption: "Wedding slow-mo magic", type: "video" },
+      { url: "https://res.cloudinary.com/dhahjsrtn/video/upload/v1773062669/Euphoria%20Events/wedding_reception_fyhbvu.mp4", caption: "Reception 360° highlights", type: "video" },
+      { url: "https://res.cloudinary.com/dhahjsrtn/video/upload/v1773266181/Euphoria%20Events/PXL_20241130_150920897_w5yc2w.mp4", caption: "360° booth in action", type: "video" },
+      { url: "https://res.cloudinary.com/dhahjsrtn/image/upload/v1773264395/Euphoria%20Events/PXL_20241130_171434274_btdq7x.jpg", caption: "Captured in the moment" },
     ],
   },
   2: {
