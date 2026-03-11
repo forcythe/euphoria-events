@@ -199,7 +199,7 @@ export const GALLERIES = {
   },
   3: {
     label: "Corporate Gala Night", color: "#00F5FF", tag: "Videography",
-    cover: "https://res.cloudinary.com/dhahjsrtn/image/upload/v1773264211/Euphoria%20Events/BOS_7976_ottdia.jpg",
+    cover: "https://res.cloudinary.com/dhahjsrtn/image/upload/v1773265341/Euphoria%20Events/BOS_1_zcfjyi.jpg",
     media: [
       { url: "https://res.cloudinary.com/dhahjsrtn/video/upload/v1773063421/Euphoria%20Events/Gala_v3mwjq.mp4", caption: "Gala night highlights", type: "video" },
       { url: "https://res.cloudinary.com/dhahjsrtn/video/upload/v1773062615/Euphoria%20Events/Greenspring_PTA_Meeting_skorc5.mp4", caption: "School PTA event", type: "video" },
