@@ -199,16 +199,14 @@ export const GALLERIES = {
   },
   3: {
     label: "Corporate Gala Night", color: "#00F5FF", tag: "Videography",
-    cover: "https://images.unsplash.com/photo-1511578314322-379afb476865?w=1200&q=80",
+    cover: "/gala-crowd.jpg",
     media: [
       { url: "https://res.cloudinary.com/dhahjsrtn/video/upload/v1773063421/Euphoria%20Events/Gala_v3mwjq.mp4", caption: "Gala night highlights", type: "video" },
-      { url: "https://images.unsplash.com/photo-1511578314322-379afb476865?w=1200&q=80", caption: "Gala evening" },
-      { url: "https://images.unsplash.com/photo-1576633587382-13ddf37b1fc1?w=1200&q=80", caption: "Behind the lens" },
-      { url: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=1200&q=80", caption: "Keynote moment" },
-      { url: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=1200&q=80", caption: "Awards night" },
-      { url: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=1200&q=80", caption: "Team celebration" },
-      { url: "https://images.unsplash.com/photo-1543269865-cbf427effbad?w=1200&q=80", caption: "Candid laughter" },
       { url: "https://res.cloudinary.com/dhahjsrtn/video/upload/v1773062615/Euphoria%20Events/Greenspring_PTA_Meeting_skorc5.mp4", caption: "School PTA event", type: "video" },
+      { url: "/gala-crowd.jpg", caption: "Gala night crowd" },
+      { url: "/gala-host.jpg", caption: "Gala host" },
+      { url: "/gala-table.jpg", caption: "Gala table setup" },
+      { url: "/gala-party.jpg", caption: "Gala party vibes" },
     ],
   },
   4: {
