@@ -22,7 +22,7 @@ export default function InvoicePage() {
       venue:     p.get('venue')     || '',
       services:  p.get('services')  || '',
       invoiceNo,
-      deposit: '', total: '', notes: '',
+      deposit: '', total: '', notes: 'Payment Details:\nBank: Providus Bank\nAccount Number: 1307886609\nAccount Name: Perime Experiences Ltd\n\nPlease pay 30% deposit to confirm your booking. Balance due on event day.',
     });
     setReady(true);
   }, []);
@@ -50,7 +50,7 @@ export default function InvoicePage() {
     <>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&display=swap');
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
         body { background: #04000A; font-family: 'DM Sans', Arial, sans-serif; color: #fff; }
         .page { max-width: 860px; margin: 0 auto; padding: 32px 20px 80px; }
         .top-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; flex-wrap: wrap; gap: 12px; }
@@ -158,6 +158,7 @@ export default function InvoicePage() {
         <div className="invoice-preview" ref={printRef}>
           <div className="inv-header">
             <div>
+              <img src="/favicon.png" alt="Euphoria Events" width={60} height={60} style={{borderRadius:12,marginBottom:10,display:'block'}} />
               <div className="inv-logo">EUPHORIA<span>Events • Lagos, Nigeria</span></div>
               <p style={{fontSize:12,color:'rgba(255,255,255,.4)',marginTop:8}}>booking@euphoria.events</p>
               <p style={{fontSize:12,color:'rgba(255,255,255,.4)'}}>+234 703 856 5517</p>
@@ -195,10 +196,16 @@ export default function InvoicePage() {
                   <tr key={i}>
                     <td>{s.trim()}</td>
                     <td style={{color:'#888'}}>Event media service</td>
-                    <td style={{textAlign:'right'}}>{i === 0 && totalNum > 0 ? totalNum.toLocaleString() : '—'}</td>
+                    <td style={{textAlign:'right'}}>—</td>
                   </tr>
                 )) : (
                   <tr><td colSpan={3} style={{color:'#aaa',textAlign:'center'}}>No services listed</td></tr>
+                )}
+                {totalNum > 0 && (
+                  <tr style={{background:'#f9f9f9'}}>
+                    <td colSpan={2} style={{fontWeight:700}}>Total Package</td>
+                    <td style={{textAlign:'right',fontWeight:700}}>₦{totalNum.toLocaleString()}</td>
+                  </tr>
                 )}
               </tbody>
             </table>
