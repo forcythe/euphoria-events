@@ -22,7 +22,7 @@ export default function InvoicePage() {
       venue:     p.get('venue')     || '',
       services:  p.get('services')  || '',
       invoiceNo,
-      deposit: '', total: '', notes: 'Payment Details:\nBank: Providus Bank\nAccount Number: 1307886609\nAccount Name: Perime Experiences Ltd\n\nPlease pay 30% deposit to confirm your booking. Balance due on event day.',
+      deposit: '', total: '', notes: 'Bank: Providus Bank\nAccount Number: 1307886609\nAccount Name: Perime Experiences Ltd\n\nPlease pay 30% deposit to confirm your booking. Balance is due 7 days before your event.',
     });
     setReady(true);
   }, []);
@@ -158,8 +158,10 @@ export default function InvoicePage() {
         <div className="invoice-preview" ref={printRef}>
           <div className="inv-header">
             <div>
-              <img src="/favicon.png" alt="Euphoria Events" width={60} height={60} style={{borderRadius:12,marginBottom:10,display:'block'}} />
-              <div className="inv-logo">EUPHORIA<span>Events • Lagos, Nigeria</span></div>
+              <div style={{display:'flex',alignItems:'center',gap:12,marginBottom:6}}>
+                <img src="/favicon.png" alt="Euphoria Events" width={36} height={36} style={{borderRadius:8,display:'block',flexShrink:0}} />
+                <div className="inv-logo">EUPHORIA<span>Events • Lagos, Nigeria</span></div>
+              </div>
               <p style={{fontSize:12,color:'rgba(255,255,255,.4)',marginTop:8}}>booking@euphoria.events</p>
               <p style={{fontSize:12,color:'rgba(255,255,255,.4)'}}>+234 703 856 5517</p>
             </div>
@@ -218,7 +220,15 @@ export default function InvoicePage() {
 
             {form.notes && (
               <div className="inv-notes">
-                <strong>Payment Instructions / Notes:</strong><br/>{form.notes}
+                <strong>Payment Instructions / Notes:</strong><br/>
+                {form.notes.split('\n').map((line, i) => {
+                  const isBankLine = line.startsWith('Bank:') || line.startsWith('Account Number:') || line.startsWith('Account Name:');
+                  return line ? (
+                    <span key={i} style={{display:'block', marginTop: i === 0 ? 6 : 2}}>
+                      {isBankLine ? <strong>{line}</strong> : line}
+                    </span>
+                  ) : <br key={i} />;
+                })}
               </div>
             )}
           </div>
