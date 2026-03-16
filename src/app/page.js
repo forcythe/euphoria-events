@@ -594,6 +594,12 @@ export default function HomePage() {
   const [submitted, setSubmitted]       = useState(false);
   const [scrolled, setScrolled]         = useState(false);
   const [blockedDates, setBlockedDates]   = useState([]);
+  const [splash, setSplash] = useState(true);
+
+  useEffect(() => {
+    const t = setTimeout(() => setSplash(false), 2800);
+    return () => clearTimeout(t);
+  }, []);
   const [submitting, setSubmitting]       = useState(false);
   const [submitError, setSubmitError]     = useState(null);
 
@@ -1097,6 +1103,29 @@ export default function HomePage() {
       {activeGallery && <GalleryModal galleryId={activeGallery} onClose={() => setActiveGallery(null)} />}
       {pkgModal && <PackageBookingModal pkg={pkgModal} onClose={() => setPkgModal(null)} blockedDates={blockedDates} />}
       {showTerms && <TermsModal page={showTerms} onClose={() => setShowTerms(false)} />}
+
+      {/* Splash Screen */}
+      {splash && (
+        <div style={{ position: 'fixed', inset: 0, zIndex: 99999, background: '#04000A', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', animation: splash ? 'none' : 'fadeOut .5s ease forwards' }}>
+          <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 24 }}>
+            {/* Logo */}
+            <img src="/favicon.png" alt="Euphoria Events" width={100} height={100}
+              style={{ animation: 'splashLogo 1s ease forwards', opacity: 0 }} />
+            {/* Brand name */}
+            <div style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(32px,8vw,56px)', letterSpacing: '0.2em', background: 'linear-gradient(135deg,#FF3CAC,#FFD700,#FF3CAC)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', animation: 'splashText 1s ease .4s forwards', opacity: 0 }}>
+              EUPHORIA EVENTS
+            </div>
+            {/* Tagline */}
+            <div style={{ fontSize: 13, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(255,255,255,.45)', animation: 'splashText 1s ease .7s forwards', opacity: 0 }}>
+              Capturing moments, creating memories
+            </div>
+            {/* Loading bar */}
+            <div style={{ width: 180, height: 2, background: 'rgba(255,255,255,.1)', borderRadius: 2, overflow: 'hidden', marginTop: 16 }}>
+              <div style={{ height: '100%', background: 'linear-gradient(90deg,#FF3CAC,#FFD700)', borderRadius: 2, animation: 'splashBar 2.4s ease forwards' }} />
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* WhatsApp Floating Bubble */}
       <a href="https://wa.me/2347038565517?text=Hi%20Euphoria%20Events!%20I%27d%20like%20to%20make%20an%20enquiry."
