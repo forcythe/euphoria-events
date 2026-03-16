@@ -158,9 +158,9 @@ export default function InvoicePage() {
         <div className="invoice-preview" ref={printRef}>
           <div className="inv-header">
             <div>
-              <div style={{display:'flex',alignItems:'center',gap:12,marginBottom:6}}>
-                <img src="/favicon.png" alt="Euphoria Events" width={36} height={36} style={{borderRadius:8,display:'block',flexShrink:0}} />
-                <div className="inv-logo">EUPHORIA<span>Events • Lagos, Nigeria</span></div>
+              <div style={{display:'flex',flexDirection:'column',alignItems:'center',gap:6,marginBottom:6}}>
+                <img src="/favicon.png" alt="Euphoria Events" width={36} height={36} style={{borderRadius:8,display:'block'}} />
+                <div className="inv-logo" style={{textAlign:'center'}}>EUPHORIA<span>Events • Lagos, Nigeria</span></div>
               </div>
               <p style={{fontSize:12,color:'rgba(255,255,255,.4)',marginTop:8}}>booking@euphoria.events</p>
               <p style={{fontSize:12,color:'rgba(255,255,255,.4)'}}>+234 703 856 5517</p>
