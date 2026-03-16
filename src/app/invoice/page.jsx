@@ -13,6 +13,23 @@ export default function InvoicePage() {
     const p = new URLSearchParams(window.location.search);
     const today = new Date();
     const invoiceNo = `EE-${today.getFullYear()}${String(today.getMonth()+1).padStart(2,'0')}${String(today.getDate()).padStart(2,'0')}-${Math.floor(Math.random()*900)+100}`;
+    const initServices = p.get('services') || '';
+    const initList = initServices.split(',').filter(Boolean);
+    const INIT_PRICES = {
+      'spark': 550000, 'Spark': 550000,
+      'euphoria': 1500000, 'Euphoria': 1500000,
+      'ignite': 850000, 'Ignite': 850000,
+      '360': 300000, '360°': 300000, '360° Camera Booth': 300000, '360 Booth': 300000,
+      'smile': 350000, 'Smile': 350000, 'Smile Camera Booth': 350000, 'Smile Booth': 350000,
+      'guestbook': 300000, 'Guestbook': 300000, 'Audio & Video Guestbook': 300000, 'Audio Guestbook': 300000,
+      'videography': 250000, 'Videography': 250000, 'Mobile Videography': 250000,
+    };
+    const initTotal = initList.reduce((sum, s) => {
+      const k = s.trim();
+      if (INIT_PRICES[k]) return sum + INIT_PRICES[k];
+      const found = Object.keys(INIT_PRICES).find(p => k.toLowerCase().includes(p.toLowerCase()));
+      return sum + (found ? INIT_PRICES[found] : 0);
+    }, 0);
     setForm({
       name:      p.get('name')      || '',
       email:     p.get('email')     || '',
@@ -20,14 +37,34 @@ export default function InvoicePage() {
       date:      p.get('date')      || '',
       eventType: p.get('eventType') || '',
       venue:     p.get('venue')     || '',
-      services:  p.get('services')  || '',
+      services:  initServices,
       invoiceNo,
-      deposit: '', total: '', notes: 'Bank: Providus Bank\nAccount Number: 1307886609\nAccount Name: Perime Experiences Ltd\n\nPlease pay 30% deposit to confirm your booking. Balance is due 7 days before your event.',
+      deposit: '', total: initTotal > 0 ? String(initTotal) : '', notes: 'Bank: Providus Bank\nAccount Number: 1307886609\nAccount Name: Perime Experiences Ltd\n\nPlease pay 30% deposit to confirm your booking. Balance is due 7 days before your event.',
     });
     setReady(true);
   }, []);
 
   const serviceList = form.services ? form.services.split(',').filter(Boolean) : [];
+
+  const PRICES = {
+    // Packages
+    'spark': 550000, 'Spark': 550000,
+    'euphoria': 1500000, 'Euphoria': 1500000,
+    'ignite': 850000, 'Ignite': 850000,
+    // Individual services
+    '360': 300000, '360°': 300000, '360° Camera Booth': 300000, '360 Booth': 300000,
+    'smile': 350000, 'Smile': 350000, 'Smile Camera Booth': 350000, 'Smile Booth': 350000,
+    'guestbook': 300000, 'Guestbook': 300000, 'Audio & Video Guestbook': 300000, 'Audio Guestbook': 300000,
+    'videography': 250000, 'Videography': 250000, 'Mobile Videography': 250000,
+  };
+
+  const autoTotal = serviceList.reduce((sum, s) => {
+    const key = s.trim();
+    // Check exact match first, then partial
+    if (PRICES[key]) return sum + PRICES[key];
+    const found = Object.keys(PRICES).find(k => key.toLowerCase().includes(k.toLowerCase()));
+    return sum + (found ? PRICES[found] : 0);
+  }, 0);
 
   const formatDate = d => {
     if (!d) return '';
@@ -123,7 +160,20 @@ export default function InvoicePage() {
             ].map(([key, label]) => (
               <div className="field" key={key}>
                 <label>{label}</label>
-                <input value={form[key]} onChange={e => setForm(f => ({...f, [key]: e.target.value}))} />
+                <input value={form[key]} onChange={e => {
+                  const updated = {...form, [key]: e.target.value};
+                  if (key === 'services') {
+                    const list = e.target.value.split(',').filter(Boolean);
+                    const auto = list.reduce((sum, s) => {
+                      const k = s.trim();
+                      if (PRICES[k]) return sum + PRICES[k];
+                      const found = Object.keys(PRICES).find(p => k.toLowerCase().includes(p.toLowerCase()));
+                      return sum + (found ? PRICES[found] : 0);
+                    }, 0);
+                    if (auto > 0) updated.total = String(auto);
+                  }
+                  setForm(updated);
+                }} />
               </div>
             ))}
           </div>
