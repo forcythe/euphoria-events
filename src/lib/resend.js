@@ -285,3 +285,55 @@ export async function sendBookingEmails({ booking, calEventLink }) {
 
   return results;
 }
+export async function sendReminderEmail({ clientEmail, clientName, venue, eventType, date }) {
+  const RESEND_API_KEY = process.env.RESEND_API_KEY;
+  if (!RESEND_API_KEY) return;
+
+  const formattedDate = new Date(date + 'T00:00:00').toLocaleDateString('en-NG', {
+    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+  });
+
+  const html = `<!DOCTYPE html>
+<html>
+<body style="margin:0;padding:0;background:#04000A;font-family:Arial,sans-serif;color:#ffffff;">
+  <div style="max-width:600px;margin:0 auto;padding:40px 24px;">
+    <div style="text-align:center;margin-bottom:32px;">
+      <img src="https://euphoria.events/favicon.png" width="70" height="70" alt="Euphoria Events" style="border-radius:16px;" />
+      <h1 style="font-size:28px;letter-spacing:4px;margin:16px 0 4px;color:#FFD700;">EUPHORIA EVENTS</h1>
+      <p style="color:rgba(255,255,255,.4);font-size:12px;letter-spacing:2px;text-transform:uppercase;margin:0;">Your big day is tomorrow!</p>
+    </div>
+    <div style="background:linear-gradient(135deg,rgba(255,61,172,.13),rgba(255,215,0,.13));border:1px solid rgba(255,215,0,.27);border-radius:20px;padding:32px;margin-bottom:24px;text-align:center;">
+      <div style="font-size:48px;margin-bottom:12px;">🎉</div>
+      <h2 style="font-size:22px;margin:0 0 8px;color:#FFD700;">See you tomorrow, ${clientName}!</h2>
+      <p style="color:rgba(255,255,255,.6);margin:0;font-size:15px;">We are all set for your <strong style="color:#FF3CAC;">${eventType}</strong></p>
+    </div>
+    <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:24px;margin-bottom:24px;">
+      <h3 style="font-size:13px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);margin:0 0 16px;">Event Details</h3>
+      <table style="width:100%;border-collapse:collapse;">
+        <tr><td style="padding:8px 0;color:rgba(255,255,255,.4);font-size:13px;">Date</td><td style="padding:8px 0;font-size:14px;font-weight:600;">${formattedDate}</td></tr>
+        <tr><td style="padding:8px 0;color:rgba(255,255,255,.4);font-size:13px;">Event</td><td style="padding:8px 0;font-size:14px;font-weight:600;">${eventType}</td></tr>
+        <tr><td style="padding:8px 0;color:rgba(255,255,255,.4);font-size:13px;">Venue</td><td style="padding:8px 0;font-size:14px;font-weight:600;">${venue}</td></tr>
+      </table>
+    </div>
+    <div style="background:rgba(255,61,172,.08);border:1px solid rgba(255,61,172,.2);border-radius:16px;padding:20px;margin-bottom:24px;">
+      <p style="margin:0;font-size:14px;color:rgba(255,255,255,.7);">Need to reach us? Call or WhatsApp <strong style="color:#FF3CAC;">+234 703 856 5517</strong> or email <strong style="color:#FF3CAC;">booking@euphoria.events</strong></p>
+    </div>
+    <p style="text-align:center;color:rgba(255,255,255,.25);font-size:12px;">Euphoria Events &bull; Lagos, Nigeria</p>
+  </div>
+</body>
+</html>`;
+
+  await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${RESEND_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      from: 'Euphoria Events <booking@euphoria.events>',
+      to: [clientEmail],
+      subject: `Reminder: Your event is tomorrow — ${eventType}`,
+      html,
+    }),
+  });
+}
