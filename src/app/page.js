@@ -153,41 +153,27 @@ function VenueInput({ value, onChange }) {
   const debounceRef = useRef(null);
   const wrapRef     = useRef(null);
 
-  const LAGOS_VENUES = [
-    'Eko Hotel & Suites, Victoria Island, Lagos',
-    'Landmark Event Centre, Victoria Island, Lagos',
-    'Terra Kulture, Victoria Island, Lagos',
-    'Oriental Hotel Lagos, Victoria Island',
-    'Lekki Conservation Centre, Lagos',
-    'Balmoral Event Centre, Federal Palace Hotel, Lagos',
-    '10 Degrees Event Centre, Lekki, Lagos',
-    'The Civic Centre, Victoria Island, Lagos',
-    'Radisson Blu Hotel Lagos, Ikeja',
-    'Sheraton Lagos Hotel, Ikeja',
-    'Transcorp Hilton Lagos',
-    'George Hotel, Victoria Island, Lagos',
-    'Wheatbaker Hotel, Ikoyi, Lagos',
-    'Four Points by Sheraton Lagos',
-    'Lagos Continental Hotel, Victoria Island',
-    'Eko Signature, Victoria Island, Lagos',
-    'The Address Homestead, Ikeja, Lagos',
-  ];
-
   const fetchSuggestions = async (input) => {
     if (!input || input.length < 3) { setSuggestions([]); setOpen(false); return; }
     setLoading(true);
     try {
-      const matches = LAGOS_VENUES.filter(v => v.toLowerCase().includes(input.toLowerCase()));
-      const extras  = [`${input} Event Hall, Lagos`, `${input} Banquet Centre, Lagos`];
-      setSuggestions([...matches.slice(0, 4), ...extras.slice(0, Math.max(0, 5 - matches.length))].slice(0, 6));
-      setOpen(true);
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(input + ' Lagos Nigeria')}&format=json&limit=6&addressdetails=1`,
+        { headers: { 'Accept-Language': 'en', 'User-Agent': 'EuphoriaEvents/1.0 (booking@euphoria.events)' } }
+      );
+      const data = await res.json();
+      const results = data.map(p => p.display_name);
+      setSuggestions(results.length > 0 ? results : []);
+      setOpen(results.length > 0);
+    } catch {
+      setSuggestions([]);
     } finally { setLoading(false); }
   };
 
   const handleChange = e => {
     onChange(e.target.value);
     clearTimeout(debounceRef.current);
-    debounceRef.current = setTimeout(() => fetchSuggestions(e.target.value), 280);
+    debounceRef.current = setTimeout(() => fetchSuggestions(e.target.value), 400);
   };
 
   const pick = s => { onChange(s); setSuggestions([]); setOpen(false); };
@@ -219,7 +205,7 @@ function VenueInput({ value, onChange }) {
             </div>
           ))}
           <div style={{ padding: '7px 16px', fontSize: 10, color: 'rgba(255,255,255,.2)', display: 'flex', alignItems: 'center', gap: 5 }}>
-            🗺 Powered by Google Maps
+            © OpenStreetMap contributors
           </div>
         </div>
       )}
