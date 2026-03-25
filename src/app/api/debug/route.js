@@ -20,8 +20,11 @@ export async function GET() {
   // Test Google Calendar
   try {
     const { getBlockedDates } = await import('@/lib/googleCalendar');
+    const { getBlockedDates, getRawEvents } = await import('@/lib/googleCalendar');
     const dates = await getBlockedDates();
-    checks.calendarTest = { ok: true, blockedDates: dates.length, dates };
+    let rawEvents = [];
+    try { rawEvents = await getRawEvents(); } catch(e) {}
+    checks.calendarTest = { ok: true, blockedDates: dates.length, dates, rawEvents: rawEvents.map(e => ({ title: e.summary, start: e.start, end: e.end, status: e.status })) };
   } catch (err) {
     checks.calendarTest = { ok: false, error: err.message };
   }

@@ -229,3 +229,23 @@ export async function createBookingEvent(booking) {
 
   return await res.json();
 }
+
+export async function getRawEvents() {
+  const token = await getAccessToken();
+  const now = new Date();
+  const end = new Date(now);
+  end.setFullYear(end.getFullYear() + 1);
+  const params = new URLSearchParams({
+    timeMin: now.toISOString(),
+    timeMax: end.toISOString(),
+    singleEvents: 'true',
+    orderBy: 'startTime',
+    maxResults: '250',
+  });
+  const res = await fetch(
+    `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(GOOGLE_CALENDAR_ID)}/events?${params}`,
+    { headers: { Authorization: `Bearer ${token}` }, cache: 'no-store' }
+  );
+  const data = await res.json();
+  return data.items || [];
+}
