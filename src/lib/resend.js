@@ -2,12 +2,12 @@
  * Resend email helper
  *
  * Sends two emails on every confirmed booking request:
- *  1. Client confirmation  — from forms@euphoria.events
+ *  1. Client confirmation  — from noreply@euphoria.events
  *  2. Owner notification   — to booking@euphoria.events
  */
 
 const RESEND_API_KEY   = process.env.RESEND_API_KEY;
-const FROM_EMAIL       = 'forms@euphoria.events';
+const FROM_EMAIL       = 'noreply@euphoria.events';
 const NOTIFY_EMAIL     = 'booking@euphoria.events';
 const RESEND_ENDPOINT  = 'https://api.resend.com/emails';
 
