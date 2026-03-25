@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 export default function InvoicePage() {
   const [form, setForm] = useState({
     name: '', email: '', phone: '', date: '', eventType: '', venue: '', services: '',
-    invoiceNo: '', deposit: '', total: '', notes: '',
+    invoiceNo: '', deposit: '', total: '', vat: '7.5', notes: '',
   });
   const [ready, setReady] = useState(false);
   const printRef = useRef(null);
@@ -39,7 +39,7 @@ export default function InvoicePage() {
       venue:     p.get('venue')     || '',
       services:  initServices,
       invoiceNo,
-      deposit: '', total: initTotal > 0 ? String(initTotal) : '', notes: 'Bank: Providus Bank\nAccount Number: 1307886609\nAccount Name: Perime Experiences Ltd\n\nPlease pay 30% deposit to confirm your booking. Balance is due 7 days before your event.',
+      deposit: '', total: initTotal > 0 ? String(initTotal) : '', vat: '7.5', notes: 'Bank: Providus Bank\nAccount Number: 1307886609\nAccount Name: Perime Experiences Ltd\n\nPlease pay 30% deposit to confirm your booking. Balance is due 7 days before your event.',
     });
     setReady(true);
   }, []);
@@ -73,7 +73,10 @@ export default function InvoicePage() {
 
   const totalNum   = parseFloat(form.total)   || 0;
   const depositNum = parseFloat(form.deposit) || 0;
-  const balance    = totalNum - depositNum;
+  const vatRate    = parseFloat(form.vat)     || 0;
+  const vatAmount  = Math.round(totalNum * vatRate / 100);
+  const grandTotal = totalNum + vatAmount;
+  const balance    = grandTotal - depositNum;
 
   const handlePrint = () => window.print();
 
@@ -193,6 +196,10 @@ export default function InvoicePage() {
               <input type="number" value={form.deposit} onChange={e => setForm(f => ({...f, deposit: e.target.value}))} placeholder="e.g. 165000" />
             </div>
             <div className="field">
+              <label>VAT (%)</label>
+              <input type="number" value={form.vat} onChange={e => setForm(f => ({...f, vat: e.target.value}))} placeholder="7.5" step="0.1" />
+            </div>
+            <div className="field">
               <label>Services (comma separated)</label>
               <input value={form.services} onChange={e => setForm(f => ({...f, services: e.target.value}))} placeholder="360 Booth, Smile Booth" />
             </div>
@@ -264,6 +271,8 @@ export default function InvoicePage() {
 
             <div className="inv-totals">
               <div className="row"><span>Subtotal</span><span>₦{totalNum.toLocaleString()}</span></div>
+              {vatAmount > 0 && <div className="row"><span>VAT ({form.vat}%)</span><span>₦{vatAmount.toLocaleString()}</span></div>}
+              {vatAmount > 0 && <div className="row" style={{fontWeight:600}}><span>Total (incl. VAT)</span><span>₦{grandTotal.toLocaleString()}</span></div>}
               <div className="row"><span>Deposit Paid</span><span style={{color:'green'}}>- ₦{depositNum.toLocaleString()}</span></div>
               <div className="row balance"><span>Balance Due</span><span>₦{balance.toLocaleString()}</span></div>
             </div>
