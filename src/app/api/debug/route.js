@@ -21,7 +21,7 @@ export async function GET() {
   try {
     const { getBlockedDates } = await import('@/lib/googleCalendar');
     const dates = await getBlockedDates();
-    checks.calendarTest = { ok: true, blockedDates: dates.length };
+    checks.calendarTest = { ok: true, blockedDates: dates.length, dates };
   } catch (err) {
     checks.calendarTest = { ok: false, error: err.message };
   }
