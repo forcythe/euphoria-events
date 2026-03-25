@@ -134,7 +134,9 @@ export async function getBlockedDates() {
     // e.g. an event on March 11 has end.date = "2026-03-12"
     // So for all-day events (no time component), subtract 1 day from end
     const isAllDay = !startRaw.includes('T');
-    if (isAllDay) endDate.setDate(endDate.getDate() - 1);
+    // Only subtract 1 day if end is strictly after start (Google standard all-day format)
+    // If start === end (our booking format), don't subtract
+    if (isAllDay && endDate > startDate) endDate.setDate(endDate.getDate() - 1);
 
     // Block every calendar day the event spans
     const cursor = new Date(startDate);
