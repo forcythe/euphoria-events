@@ -108,7 +108,7 @@ export async function getBlockedDates() {
 
   const res = await fetch(
     `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(GOOGLE_CALENDAR_ID)}/events?${params}`,
-    { headers: { Authorization: `Bearer ${token}` }, next: { revalidate: 60 } }, // cache 60s
+    { headers: { Authorization: `Bearer ${token}` }, cache: 'no-store' },
   );
 
   if (!res.ok) {
