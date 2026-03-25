@@ -195,10 +195,12 @@ export async function createBookingEvent(booking) {
     `To decline: delete this event — the date will open back up on the website.`,
   ].join('\n');
 
+  const mapsUrl = booking.venue ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(booking.venue)}` : '';
+
   const event = {
     summary:     `⏳ PENDING — ${booking.name} (${booking.eventType || 'Event'})`,
     description,
-    location:    booking.venue || '',
+    location:    booking.venue ? `${booking.venue} — ${mapsUrl}` : '',
     status:      'tentative', // shows as striped/pending in Google Calendar
     start:       { date: booking.date },
     end:         { date: booking.date },
