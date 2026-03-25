@@ -701,6 +701,86 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* ── ABOUT ── */}
+        <section id="about" aria-label="About Euphoria Events" style={{ padding: '96px 36px', background: 'linear-gradient(to bottom,#08010F,#0d0118)' }}>
+          <div style={{ maxWidth: 1220, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center' }}
+            className="about-grid">
+            <style>{`
+              .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+              @media (max-width: 768px) { .about-grid { grid-template-columns: 1fr; gap: 48px; } }
+              @keyframes floatA { 0%,100% { transform: translateY(0px) rotate(-2deg); } 50% { transform: translateY(-12px) rotate(2deg); } }
+              @keyframes floatB { 0%,100% { transform: translateY(0px) rotate(2deg); } 50% { transform: translateY(-18px) rotate(-1deg); } }
+              @keyframes floatC { 0%,100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
+            `}</style>
+
+            {/* Left — Visual collage */}
+            <div style={{ position: 'relative', height: 520 }}>
+              {/* Main image */}
+              <div style={{ position: 'absolute', top: 0, left: 0, width: '72%', height: '75%', borderRadius: 24, overflow: 'hidden', boxShadow: '0 32px 80px rgba(0,0,0,.6)', animation: 'floatA 6s ease-in-out infinite', border: '2px solid rgba(255,61,172,.2)' }}>
+                <img src="https://res.cloudinary.com/dhahjsrtn/image/upload/v1773264400/Euphoria%20Events/PXL_20241130_161918346.PORTRAIT.ORIGINAL_pmrfml.jpg"
+                  alt="Euphoria Events in action" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(8,1,15,.4) 0%, transparent 60%)' }} />
+              </div>
+              {/* Secondary image */}
+              <div style={{ position: 'absolute', bottom: 0, right: 0, width: '55%', height: '55%', borderRadius: 20, overflow: 'hidden', boxShadow: '0 24px 60px rgba(0,0,0,.5)', animation: 'floatB 7s ease-in-out infinite', border: '2px solid rgba(255,215,0,.2)' }}>
+                <img src="https://res.cloudinary.com/dhahjsrtn/image/upload/v1773265341/Euphoria%20Events/BOS_1_zcfjyi.jpg"
+                  alt="Euphoria Events gala" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              </div>
+              {/* Floating stat cards */}
+              <div style={{ position: 'absolute', top: '42%', right: '-5%', background: 'rgba(13,1,24,.95)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,61,172,.3)', borderRadius: 16, padding: '14px 20px', boxShadow: '0 16px 40px rgba(255,61,172,.2)', animation: 'floatC 5s ease-in-out infinite', zIndex: 10 }}>
+                <div style={{ fontFamily: 'var(--font-bebas)', fontSize: 32, color: '#FF3CAC', lineHeight: 1 }}>500+</div>
+                <div style={{ fontSize: 11, color: 'rgba(255,255,255,.5)', letterSpacing: '0.1em', marginTop: 2 }}>Events Covered</div>
+              </div>
+              <div style={{ position: 'absolute', top: '8%', right: '10%', background: 'rgba(13,1,24,.95)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,215,0,.3)', borderRadius: 16, padding: '12px 18px', boxShadow: '0 16px 40px rgba(255,215,0,.15)', animation: 'floatC 4s ease-in-out infinite .5s', zIndex: 10 }}>
+                <div style={{ fontFamily: 'var(--font-bebas)', fontSize: 28, color: '#FFD700', lineHeight: 1 }}>⭐ 5.0</div>
+                <div style={{ fontSize: 11, color: 'rgba(255,255,255,.5)', letterSpacing: '0.1em', marginTop: 2 }}>Google Rating</div>
+              </div>
+              {/* Glow orb */}
+              <div style={{ position: 'absolute', top: '30%', left: '20%', width: 200, height: 200, borderRadius: '50%', background: 'radial-gradient(circle, rgba(255,61,172,.15) 0%, transparent 70%)', pointerEvents: 'none' }} />
+            </div>
+
+            {/* Right — Text content */}
+            <div>
+              <div style={{ fontSize: 11, letterSpacing: '0.3em', textTransform: 'uppercase', color: '#FF3CAC', fontWeight: 700, marginBottom: 14 }}>Our Story</div>
+              <h2 style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(38px,5vw,62px)', letterSpacing: '0.04em', lineHeight: 1.05, marginBottom: 24 }}>
+                WE DON'T JUST<br/><span style={{ background: 'linear-gradient(135deg,#FF3CAC,#FFD700)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>CAPTURE MOMENTS</span><br/>WE CREATE THEM
+              </h2>
+              <p style={{ color: 'rgba(255,255,255,.6)', fontSize: 15, lineHeight: 1.85, marginBottom: 20 }}>
+                Euphoria Events is Lagos' premier event media company, bringing world-class 360° booths, smile cameras, audio guestbooks and cinematic videography to every celebration.
+              </p>
+              <p style={{ color: 'rgba(255,255,255,.5)', fontSize: 14, lineHeight: 1.85, marginBottom: 36 }}>
+                From intimate baby showers to grand corporate galas, we show up with our full energy, premium equipment and a passion for making your guests feel like stars. Every event deserves to be remembered — we make sure it is.
+              </p>
+
+              {/* Stats row */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 16, marginBottom: 36 }}>
+                {[
+                  { num: '500+', label: 'Events', color: '#FF3CAC' },
+                  { num: '5★', label: 'Rating', color: '#FFD700' },
+                  { num: '3+', label: 'Years', color: '#00F5FF' },
+                ].map(({ num, label, color }) => (
+                  <div key={label} style={{ background: 'rgba(255,255,255,.04)', border: `1px solid ${color}22`, borderRadius: 16, padding: '18px 14px', textAlign: 'center' }}>
+                    <div style={{ fontFamily: 'var(--font-bebas)', fontSize: 32, color, letterSpacing: 1 }}>{num}</div>
+                    <div style={{ fontSize: 11, color: 'rgba(255,255,255,.4)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>{label}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* CTA */}
+              <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
+                <button onClick={() => scrollTo('booking')}
+                  style={{ background: 'linear-gradient(135deg,#FF3CAC,#784BA0)', border: 'none', color: '#fff', padding: '14px 32px', borderRadius: 30, fontSize: 14, fontWeight: 700, fontFamily: 'var(--font-dm)', cursor: 'pointer', letterSpacing: '0.05em' }}>
+                  Book Your Event →
+                </button>
+                <button onClick={() => scrollTo('gallery')}
+                  style={{ background: 'transparent', border: '1px solid rgba(255,255,255,.15)', color: 'rgba(255,255,255,.7)', padding: '14px 32px', borderRadius: 30, fontSize: 14, fontWeight: 600, fontFamily: 'var(--font-dm)', cursor: 'pointer' }}>
+                  View Gallery
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* ── GALLERY ── */}
         <section id="gallery" aria-label="Event gallery" style={{ padding: '96px 36px', background: 'linear-gradient(to bottom,#0b0118,#08010F)' }}>
           <div style={{ maxWidth: 1220, margin: '0 auto' }}>
@@ -1022,6 +1102,67 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* ── REVIEWS ── */}
+        <section id="reviews" aria-label="Client reviews" style={{ padding: '96px 36px', background: 'linear-gradient(to bottom,#0d0118,#08010F)' }}>
+          <div style={{ maxWidth: 1220, margin: '0 auto' }}>
+            <div style={{ textAlign: 'center', marginBottom: 60 }}>
+              <div style={{ fontSize: 11, letterSpacing: '0.3em', textTransform: 'uppercase', color: '#FFD700', fontWeight: 700, marginBottom: 14 }}>What They Say</div>
+              <h2 style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(38px,6vw,70px)', letterSpacing: '0.05em' }}>CLIENT LOVE</h2>
+              <p style={{ color: 'rgba(255,255,255,.4)', marginTop: 10, fontSize: 15 }}>Real moments. Real memories. Real reviews.</p>
+              {/* Star rating summary */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, marginTop: 20 }}>
+                <div style={{ display: 'flex', gap: 4 }}>
+                  {[1,2,3,4,5].map(i => <span key={i} style={{ fontSize: 24, color: '#FFD700' }}>★</span>)}
+                </div>
+                <span style={{ fontFamily: 'var(--font-bebas)', fontSize: 32, color: '#FFD700', letterSpacing: 2 }}>5.0</span>
+                <span style={{ fontSize: 13, color: 'rgba(255,255,255,.4)' }}>on Google</span>
+              </div>
+            </div>
+
+            {/* Reviews grid */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 20, marginBottom: 48 }}>
+              {[
+                { name: 'Adaeze Okafor', event: 'Wedding Reception', review: 'Euphoria Events made our wedding absolutely magical! The 360° booth had all our guests going crazy. The team was professional, fun and delivered beyond expectations. Best decision we made!', stars: 5, initial: 'A', color: '#FF3CAC' },
+                { name: 'Emeka Nwosu', event: 'Corporate Gala', review: 'We hired Euphoria for our company's annual gala and they were outstanding. The setup was sleek, the smile booth had a queue all night, and the video highlights were cinematic. Highly recommend!', stars: 5, initial: 'E', color: '#FFD700' },
+                { name: 'Blessing Adeyemi', event: 'Birthday Party', review: 'My 30th birthday was a dream come true thanks to Euphoria Events! The audio guestbook is something I'll treasure forever. Every guest loved it. They truly go above and beyond.', stars: 5, initial: 'B', color: '#00F5FF' },
+                { name: 'Funmi Adeola', event: 'Baby Shower', review: 'I cannot stop raving about Euphoria Events! They turned my baby shower into a full production. The photos and videos were stunning. The team is so warm and talented.', stars: 5, initial: 'F', color: '#39FF14' },
+                { name: 'Tunde Fashola', event: 'Graduation Party', review: 'From booking to delivery, everything was seamless. The 360 booth was a hit and the prints were gorgeous. Will definitely be booking again for our next event!', stars: 5, initial: 'T', color: '#FF6B35' },
+                { name: 'Chioma Obi', event: 'Bridal Shower', review: 'Absolutely incredible experience! The team arrived early, set up beautifully and kept the energy high all evening. Our guests are still talking about it weeks later!', stars: 5, initial: 'C', color: '#784BA0' },
+              ].map(({ name, event, review, stars, initial, color }) => (
+                <div key={name}
+                  style={{ background: 'rgba(255,255,255,.03)', border: `1px solid ${color}22`, borderRadius: 20, padding: '28px 24px', display: 'flex', flexDirection: 'column', gap: 16, transition: 'transform .3s, box-shadow .3s' }}
+                  onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = `0 20px 60px ${color}18`; }}
+                  onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}>
+                  {/* Stars */}
+                  <div style={{ display: 'flex', gap: 3 }}>
+                    {[1,2,3,4,5].map(i => <span key={i} style={{ fontSize: 16, color: '#FFD700' }}>★</span>)}
+                  </div>
+                  {/* Review text */}
+                  <p style={{ color: 'rgba(255,255,255,.7)', fontSize: 14, lineHeight: 1.75, flex: 1 }}>"{review}"</p>
+                  {/* Reviewer */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <div style={{ width: 42, height: 42, borderRadius: '50%', background: `linear-gradient(135deg,${color},${color}88)`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 16, color: '#000', flexShrink: 0 }}>{initial}</div>
+                    <div>
+                      <div style={{ fontWeight: 700, fontSize: 14, color: '#fff' }}>{name}</div>
+                      <div style={{ fontSize: 12, color: color, letterSpacing: '0.05em' }}>{event}</div>
+                    </div>
+                    {/* Google G */}
+                    <div style={{ marginLeft: 'auto', opacity: .4, fontSize: 18 }}>G</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Leave a review CTA */}
+            <div style={{ textAlign: 'center' }}>
+              <a href="https://g.page/r/CagVce2aZCPOEAI/review" target="_blank" rel="noopener noreferrer"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: 10, background: 'linear-gradient(135deg,#FFD700,#FF6B35)', color: '#000', padding: '14px 36px', borderRadius: 30, fontSize: 15, fontWeight: 700, textDecoration: 'none', letterSpacing: '0.05em' }}>
+                ⭐ Leave Us a Review on Google
+              </a>
+            </div>
+          </div>
+        </section>
+
         {/* ── FAQ ── */}
         <section id="faq" aria-label="Frequently asked questions" style={{ padding: '96px 36px', background: 'linear-gradient(to bottom,#0b0118,#08010F)' }}>
           <div style={{ maxWidth: 720, margin: '0 auto' }}>
@@ -1071,7 +1212,7 @@ export default function HomePage() {
           </div>
           <nav aria-label="Footer navigation">
             <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,.28)', marginBottom: 16 }}>Navigate</div>
-            {['Services', 'Gallery', 'Packages', 'FAQ', 'Booking'].map(l => (
+            {['About', 'Services', 'Gallery', 'Packages', 'Reviews', 'FAQ', 'Booking'].map(l => (
               <button key={l} onClick={() => scrollTo(l.toLowerCase())} style={{ display: 'block', color: 'rgba(255,255,255,.48)', fontSize: 13.5, marginBottom: 10, background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-dm)', textAlign: 'left', padding: 0 }}>{l}</button>
             ))}
           </nav>
