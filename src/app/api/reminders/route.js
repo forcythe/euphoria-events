@@ -1,4 +1,4 @@
-import { sendReminderEmail } from '@/lib/resend';
+import { sendReminderEmail, sendBalanceReminderEmail, sendReviewRequestEmail } from '@/lib/resend';
 
 const GOOGLE_CALENDAR_ID  = process.env.GOOGLE_CALENDAR_ID;
 const GOOGLE_CLIENT_EMAIL = process.env.GOOGLE_CLIENT_EMAIL;
@@ -79,29 +79,71 @@ export async function GET(req) {
     const data   = await res.json();
     const events = data.items || [];
 
-    let sent = 0;
-    for (const event of events) {
-      if (event.status === 'cancelled') continue;
+    // ── Helper to fetch events on a specific date ──
+    async function getEventsOnDate(targetDate) {
+      const start = new Date(targetDate);
+      start.setHours(0, 0, 0, 0);
+      const end = new Date(start);
+      end.setDate(end.getDate() + 1);
+      const p = new URLSearchParams({ timeMin: start.toISOString(), timeMax: end.toISOString(), singleEvents: 'true', orderBy: 'startTime', maxResults: '50' });
+      const r = await fetch(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(GOOGLE_CALENDAR_ID)}/events?${p}`, { headers: { Authorization: `Bearer ${token}` } });
+      const d = await r.json();
+      return d.items || [];
+    }
 
+    function extractFields(event, fallbackDate) {
       const desc       = event.description || '';
       const emailMatch = desc.match(/📧 Email:\s*(.+)/);
       const nameMatch  = desc.match(/👤 Client:\s*(.+)/);
       const venueMatch = desc.match(/📍 Venue:\s*(.+)/);
       const typeMatch  = desc.match(/🎉 Event Type:\s*(.+)/);
-
-      if (!emailMatch) continue;
-
-      await sendReminderEmail({
+      if (!emailMatch) return null;
+      return {
         clientEmail: emailMatch[1].trim(),
         clientName:  nameMatch?.[1].trim()  || 'Valued Client',
         venue:       venueMatch?.[1].trim() || 'your venue',
         eventType:   typeMatch?.[1].trim()  || 'your event',
-        date:        event.start?.date || tomorrow.toISOString().slice(0, 10),
-      });
+        date:        event.start?.date || fallbackDate,
+      };
+    }
+
+    let sent = 0;
+
+    // ── 1. Tomorrow reminder ──
+    const tomorrowEvents = await getEventsOnDate(tomorrow);
+    for (const event of tomorrowEvents) {
+      if (event.status === 'cancelled') continue;
+      const fields = extractFields(event, tomorrow.toISOString().slice(0, 10));
+      if (!fields) continue;
+      await sendReminderEmail(fields);
       sent++;
     }
 
-    return Response.json({ success: true, remindersSent: sent, eventsFound: events.length });
+    // ── 2. Balance reminder (7 days before) ──
+    const in7days = new Date();
+    in7days.setDate(in7days.getDate() + 7);
+    const balanceEvents = await getEventsOnDate(in7days);
+    for (const event of balanceEvents) {
+      if (event.status === 'cancelled') continue;
+      const fields = extractFields(event, in7days.toISOString().slice(0, 10));
+      if (!fields) continue;
+      await sendBalanceReminderEmail(fields);
+      sent++;
+    }
+
+    // ── 3. Review request (3 days after event) ──
+    const threeDaysAgo = new Date();
+    threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+    const reviewEvents = await getEventsOnDate(threeDaysAgo);
+    for (const event of reviewEvents) {
+      if (event.status === 'cancelled') continue;
+      const fields = extractFields(event, threeDaysAgo.toISOString().slice(0, 10));
+      if (!fields) continue;
+      await sendReviewRequestEmail(fields);
+      sent++;
+    }
+
+    return Response.json({ success: true, emailsSent: sent });
   } catch (err) {
     console.error('[reminders]', err);
     return Response.json({ error: err.message }, { status: 500 });

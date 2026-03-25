@@ -340,3 +340,136 @@ export async function sendReminderEmail({ clientEmail, clientName, venue, eventT
     }),
   });
 }
+
+export async function sendBalanceReminderEmail({ clientEmail, clientName, venue, eventType, date, total, deposit }) {
+  const RESEND_API_KEY = process.env.RESEND_API_KEY;
+  if (!RESEND_API_KEY) return;
+
+  const formattedDate = new Date(date + 'T00:00:00').toLocaleDateString('en-NG', {
+    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+  });
+
+  const totalNum   = parseFloat(total)   || 0;
+  const depositNum = parseFloat(deposit) || 0;
+  const balance    = totalNum - depositNum;
+
+  const html = `<!DOCTYPE html>
+<html>
+<body style="margin:0;padding:0;background:#04000A;font-family:Arial,sans-serif;color:#ffffff;">
+  <div style="max-width:600px;margin:0 auto;padding:40px 24px;">
+    <div style="text-align:center;margin-bottom:32px;">
+      <img src="https://euphoria.events/favicon.png" width="70" height="70" alt="Euphoria Events" style="border-radius:16px;" />
+      <h1 style="font-size:28px;letter-spacing:4px;margin:16px 0 4px;color:#FFD700;">EUPHORIA EVENTS</h1>
+      <p style="color:rgba(255,255,255,.4);font-size:12px;letter-spacing:2px;text-transform:uppercase;margin:0;">Balance Payment Reminder</p>
+    </div>
+
+    <div style="background:linear-gradient(135deg,rgba(255,215,0,.13),rgba(255,107,53,.13));border:1px solid rgba(255,215,0,.27);border-radius:20px;padding:32px;margin-bottom:24px;text-align:center;">
+      <div style="font-size:48px;margin-bottom:12px;">📅</div>
+      <h2 style="font-size:22px;margin:0 0 8px;color:#FFD700;">Your event is in 7 days, ${clientName}!</h2>
+      <p style="color:rgba(255,255,255,.6);margin:0;font-size:15px;">This is a friendly reminder that your balance payment is due.</p>
+    </div>
+
+    <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:24px;margin-bottom:24px;">
+      <h3 style="font-size:13px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);margin:0 0 16px;">Event Details</h3>
+      <table style="width:100%;border-collapse:collapse;">
+        <tr><td style="padding:8px 0;color:rgba(255,255,255,.4);font-size:13px;">Date</td><td style="padding:8px 0;font-size:14px;font-weight:600;">${formattedDate}</td></tr>
+        <tr><td style="padding:8px 0;color:rgba(255,255,255,.4);font-size:13px;">Event</td><td style="padding:8px 0;font-size:14px;font-weight:600;">${eventType}</td></tr>
+        <tr><td style="padding:8px 0;color:rgba(255,255,255,.4);font-size:13px;">Venue</td><td style="padding:8px 0;font-size:14px;font-weight:600;">${venue}</td></tr>
+        ${totalNum > 0 ? `<tr><td style="padding:8px 0;color:rgba(255,255,255,.4);font-size:13px;">Total</td><td style="padding:8px 0;font-size:14px;font-weight:600;">&#8358;${totalNum.toLocaleString()}</td></tr>` : ''}
+        ${depositNum > 0 ? `<tr><td style="padding:8px 0;color:rgba(255,255,255,.4);font-size:13px;">Deposit Paid</td><td style="padding:8px 0;font-size:14px;font-weight:600;color:#39FF14;">&#8358;${depositNum.toLocaleString()}</td></tr>` : ''}
+        ${balance > 0 ? `<tr><td style="padding:8px 0;color:rgba(255,255,255,.4);font-size:13px;">Balance Due</td><td style="padding:8px 0;font-size:18px;font-weight:700;color:#FFD700;">&#8358;${balance.toLocaleString()}</td></tr>` : ''}
+      </table>
+    </div>
+
+    <div style="background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.2);border-radius:16px;padding:20px;margin-bottom:24px;">
+      <p style="margin:0 0 10px;font-size:14px;font-weight:700;color:#FFD700;">Payment Details</p>
+      <p style="margin:0;font-size:14px;color:rgba(255,255,255,.7);line-height:1.8;">
+        <strong>Bank:</strong> Providus Bank<br/>
+        <strong>Account Number:</strong> 1307886609<br/>
+        <strong>Account Name:</strong> Perime Experiences Ltd
+      </p>
+    </div>
+
+    <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px;margin-bottom:24px;">
+      <p style="margin:0;font-size:13px;color:rgba(255,255,255,.5);font-style:italic;">If you have already made full payment, please disregard this message. Thank you!</p>
+    </div>
+
+    <div style="background:rgba(255,61,172,.08);border:1px solid rgba(255,61,172,.2);border-radius:16px;padding:20px;margin-bottom:24px;">
+      <p style="margin:0;font-size:14px;color:rgba(255,255,255,.7);">Questions? Call or WhatsApp <strong style="color:#FF3CAC;">+234 703 856 5517</strong> or email <strong style="color:#FF3CAC;">booking@euphoria.events</strong></p>
+    </div>
+
+    <p style="text-align:center;color:rgba(255,255,255,.25);font-size:12px;">Euphoria Events &bull; Lagos, Nigeria</p>
+  </div>
+</body>
+</html>`;
+
+  await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${RESEND_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      from: 'Euphoria Events <booking@euphoria.events>',
+      to: [clientEmail],
+      subject: `Payment Reminder: Balance due in 7 days — ${eventType}`,
+      html,
+    }),
+  });
+}
+
+export async function sendReviewRequestEmail({ clientEmail, clientName, eventType }) {
+  const RESEND_API_KEY = process.env.RESEND_API_KEY;
+  if (!RESEND_API_KEY) return;
+
+  const html = `<!DOCTYPE html>
+<html>
+<body style="margin:0;padding:0;background:#04000A;font-family:Arial,sans-serif;color:#ffffff;">
+  <div style="max-width:600px;margin:0 auto;padding:40px 24px;">
+    <div style="text-align:center;margin-bottom:32px;">
+      <img src="https://euphoria.events/favicon.png" width="70" height="70" alt="Euphoria Events" style="border-radius:16px;" />
+      <h1 style="font-size:28px;letter-spacing:4px;margin:16px 0 4px;color:#FFD700;">EUPHORIA EVENTS</h1>
+      <p style="color:rgba(255,255,255,.4);font-size:12px;letter-spacing:2px;text-transform:uppercase;margin:0;">We hope you loved your experience!</p>
+    </div>
+
+    <div style="background:linear-gradient(135deg,rgba(255,61,172,.13),rgba(120,75,160,.13));border:1px solid rgba(255,61,172,.27);border-radius:20px;padding:32px;margin-bottom:24px;text-align:center;">
+      <div style="font-size:48px;margin-bottom:12px;">⭐</div>
+      <h2 style="font-size:22px;margin:0 0 8px;color:#FF3CAC;">How was your experience, ${clientName}?</h2>
+      <p style="color:rgba(255,255,255,.6);margin:0;font-size:15px;">We hope your <strong style="color:#FFD700;">${eventType}</strong> was everything you dreamed of and more!</p>
+    </div>
+
+    <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:24px;margin-bottom:24px;text-align:center;">
+      <p style="font-size:15px;color:rgba(255,255,255,.7);margin:0 0 20px;line-height:1.7;">Your feedback means the world to us and helps other couples and families discover Euphoria Events. It only takes 30 seconds!</p>
+      <a href="https://g.page/r/CagVce2aZCPOEAI/review" style="display:inline-block;background:linear-gradient(135deg,#FFD700,#FF6B35);color:#000;font-weight:700;font-size:16px;padding:16px 40px;border-radius:30px;text-decoration:none;letter-spacing:1px;">
+        Leave a Review ⭐
+      </a>
+    </div>
+
+    <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:20px;margin-bottom:24px;text-align:center;">
+      <p style="margin:0 0 8px;font-size:13px;color:rgba(255,255,255,.4);">Tag us in your event photos!</p>
+      <p style="margin:0;font-size:15px;color:#FF3CAC;font-weight:700;">@euphoria.eventsng</p>
+    </div>
+
+    <div style="background:rgba(255,61,172,.08);border:1px solid rgba(255,61,172,.2);border-radius:16px;padding:20px;margin-bottom:24px;">
+      <p style="margin:0;font-size:14px;color:rgba(255,255,255,.7);">Questions? Reach us at <strong style="color:#FF3CAC;">booking@euphoria.events</strong> or WhatsApp <strong style="color:#FF3CAC;">+234 703 856 5517</strong></p>
+    </div>
+
+    <p style="text-align:center;color:rgba(255,255,255,.25);font-size:12px;">Euphoria Events &bull; Lagos, Nigeria</p>
+  </div>
+</body>
+</html>`;
+
+  await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${RESEND_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      from: 'Euphoria Events <booking@euphoria.events>',
+      to: [clientEmail],
+      subject: `How was your ${eventType}? Leave us a review! ⭐`,
+      html,
+    }),
+  });
+}
