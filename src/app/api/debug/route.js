@@ -19,7 +19,6 @@ export async function GET() {
 
   // Test Google Calendar
   try {
-    const { getBlockedDates } = await import('@/lib/googleCalendar');
     const { getBlockedDates, getRawEvents } = await import('@/lib/googleCalendar');
     const dates = await getBlockedDates();
     let rawEvents = [];
