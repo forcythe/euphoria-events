@@ -104,6 +104,8 @@ export async function getBlockedDates() {
     singleEvents: 'true',
     orderBy:      'startTime',
     maxResults:   '250',
+    showDeleted:  'false',
+    showHiddenInvitations: 'true',
   });
 
   const res = await fetch(
