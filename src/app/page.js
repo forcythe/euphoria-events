@@ -728,7 +728,7 @@ export default function HomePage() {
               </div>
               {/* Floating stat cards */}
               <div style={{ position: 'absolute', top: '42%', right: '-5%', background: 'rgba(13,1,24,.95)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,61,172,.3)', borderRadius: 16, padding: '14px 20px', boxShadow: '0 16px 40px rgba(255,61,172,.2)', animation: 'floatC 5s ease-in-out infinite', zIndex: 10 }}>
-                <div style={{ fontFamily: 'var(--font-bebas)', fontSize: 32, color: '#FF3CAC', lineHeight: 1 }}>500+</div>
+                <div style={{ fontFamily: 'var(--font-bebas)', fontSize: 32, color: '#FF3CAC', lineHeight: 1 }}>200+</div>
                 <div style={{ fontSize: 11, color: 'rgba(255,255,255,.5)', letterSpacing: '0.1em', marginTop: 2 }}>Events Covered</div>
               </div>
               <div style={{ position: 'absolute', top: '8%', right: '10%', background: 'rgba(13,1,24,.95)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,215,0,.3)', borderRadius: 16, padding: '12px 18px', boxShadow: '0 16px 40px rgba(255,215,0,.15)', animation: 'floatC 4s ease-in-out infinite .5s', zIndex: 10 }}>
@@ -752,19 +752,7 @@ export default function HomePage() {
                 From intimate baby showers to grand corporate galas, we show up with our full energy, premium equipment and a passion for making your guests feel like stars. Every event deserves to be remembered — we make sure it is.
               </p>
 
-              {/* Stats row */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 16, marginBottom: 36 }}>
-                {[
-                  { num: '500+', label: 'Events', color: '#FF3CAC' },
-                  { num: '5★', label: 'Rating', color: '#FFD700' },
-                  { num: '3+', label: 'Years', color: '#00F5FF' },
-                ].map(({ num, label, color }) => (
-                  <div key={label} style={{ background: 'rgba(255,255,255,.04)', border: `1px solid ${color}22`, borderRadius: 16, padding: '18px 14px', textAlign: 'center' }}>
-                    <div style={{ fontFamily: 'var(--font-bebas)', fontSize: 32, color, letterSpacing: 1 }}>{num}</div>
-                    <div style={{ fontSize: 11, color: 'rgba(255,255,255,.4)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>{label}</div>
-                  </div>
-                ))}
-              </div>
+
 
               {/* CTA */}
               <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
