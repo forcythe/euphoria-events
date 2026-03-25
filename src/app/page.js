@@ -610,11 +610,17 @@ export default function HomePage() {
   }, []);
 
   // Fetch live blocked dates from Google Calendar
-  useEffect(() => {
-    fetch('/api/calendar/blocked-dates')
+  const fetchBlockedDates = () => {
+    fetch(`/api/calendar/blocked-dates?t=${Date.now()}`)
       .then(r => r.json())
       .then(data => { if (data.blocked) setBlockedDates(data.blocked); })
       .catch(err => console.warn('Could not fetch blocked dates:', err));
+  };
+
+  useEffect(() => {
+    fetchBlockedDates();
+    const interval = setInterval(fetchBlockedDates, 30000); // re-fetch every 30s
+    return () => clearInterval(interval);
   }, []);
 
   const scrollTo   = id => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
