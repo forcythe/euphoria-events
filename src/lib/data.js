@@ -270,9 +270,11 @@ export const BOOKED_DATES = new Set([
 ]);
 
 export const NAV_LINKS = [
+  { id: "about",    label: "About" },
   { id: "services", label: "Services" },
   { id: "gallery",  label: "Gallery" },
   { id: "packages", label: "Packages" },
+  { id: "reviews",  label: "Reviews" },
   { id: "faq",      label: "FAQ" },
   { id: "booking",  label: "Book Now", cta: true },
 ];
