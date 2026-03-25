@@ -158,15 +158,17 @@ function VenueInput({ value, onChange }) {
     setLoading(true);
     try {
       const res = await fetch(
-        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(input + ' Lagos Nigeria')}&format=json&limit=6&addressdetails=1`,
+        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(input)}&format=json&limit=5&addressdetails=1&countrycodes=ng`,
         { headers: { 'Accept-Language': 'en', 'User-Agent': 'EuphoriaEvents/1.0 (booking@euphoria.events)' } }
       );
       const data = await res.json();
       const results = data.map(p => p.display_name);
-      setSuggestions(results.length > 0 ? results : []);
-      setOpen(results.length > 0);
+      const withFallback = results.includes(input) ? results : [...results, input].slice(0, 6);
+      setSuggestions(withFallback);
+      setOpen(true);
     } catch {
-      setSuggestions([]);
+      setSuggestions([input]);
+      setOpen(true);
     } finally { setLoading(false); }
   };
 
