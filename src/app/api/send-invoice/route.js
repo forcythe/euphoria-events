@@ -9,6 +9,10 @@ export async function GET(req) {
   const date        = searchParams.get('date');
   const venue       = searchParams.get('venue');
   const services    = searchParams.get('services');
+  const total       = searchParams.get('total')   || '';
+  const deposit     = searchParams.get('deposit') || '';
+  const vat         = searchParams.get('vat')     || '7.5';
+  const notes       = searchParams.get('notes')   || '';
   const secret      = searchParams.get('secret');
 
   // Basic auth check
@@ -24,13 +28,11 @@ export async function GET(req) {
     await sendInvoiceEmail({
       clientEmail,
       clientName,
-      eventType:  eventType  || 'Event',
-      date:       date       || '',
-      venue:      venue      || '',
-      services:   services   || '',
-      total:      '',
-      deposit:    '',
-      vat:        '7.5',
+      eventType: eventType || 'Event',
+      date:      date      || '',
+      venue:     venue     || '',
+      services:  services  || '',
+      total, deposit, vat, notes,
     });
 
     // Return a nice success page

@@ -7,6 +7,8 @@ export default function InvoicePage() {
     invoiceNo: '', deposit: '', total: '', vat: '7.5', notes: '',
   });
   const [ready, setReady] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
   const printRef = useRef(null);
 
   useEffect(() => {
@@ -80,6 +82,23 @@ export default function InvoicePage() {
 
   const handlePrint = () => window.print();
 
+  const handleSendToClient = async () => {
+    if (!form.email) { alert('Client email is required'); return; }
+    setSending(true);
+    try {
+      const params = new URLSearchParams({
+        secret: 'euphoriacron123',
+        name: form.name, email: form.email, date: form.date,
+        eventType: form.eventType, venue: form.venue, services: form.services,
+        total: form.total, deposit: form.deposit, vat: form.vat, notes: form.notes,
+      });
+      const res = await fetch(`/api/send-invoice?${params}`);
+      if (res.ok) { setSent(true); setTimeout(() => setSent(false), 4000); }
+      else { alert('Failed to send. Please try again.'); }
+    } catch { alert('Network error. Please try again.'); }
+    finally { setSending(false); }
+  };
+
   if (!ready) return (
     <div style={{ minHeight: '100vh', background: '#04000A', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontFamily: 'Arial' }}>
       Loading...
@@ -151,6 +170,10 @@ export default function InvoicePage() {
         <div className="top-bar no-print">
           <div className="title">⚡ Generate Invoice</div>
           <button className="btn btn-print" onClick={handlePrint}>Print / Save PDF →</button>
+          <button className="btn" onClick={handleSendToClient} disabled={sending}
+            style={{background: sent ? 'linear-gradient(135deg,#39FF14,#00C851)' : 'linear-gradient(135deg,#FF3CAC,#784BA0)', color: '#fff', opacity: sending ? .7 : 1}}>
+            {sending ? 'Sending...' : sent ? '✓ Sent to Client!' : 'Send to Client →'}
+          </button>
         </div>
 
         {/* Editable fields */}

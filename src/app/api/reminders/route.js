@@ -1,4 +1,4 @@
-import { sendReminderEmail, sendBalanceReminderEmail, sendReviewRequestEmail, sendInvoiceEmail } from '@/lib/resend';
+import { sendReminderEmail, sendBalanceReminderEmail, sendReviewRequestEmail } from '@/lib/resend';
 
 const GOOGLE_CALENDAR_ID  = process.env.GOOGLE_CALENDAR_ID;
 const GOOGLE_CLIENT_EMAIL = process.env.GOOGLE_CLIENT_EMAIL;
@@ -140,24 +140,6 @@ export async function GET(req) {
       const fields = extractFields(event, threeDaysAgo.toISOString().slice(0, 10));
       if (!fields) continue;
       await sendReviewRequestEmail(fields);
-      sent++;
-    }
-
-    // ── 4. Invoice email (events marked INVOICED today) ──
-    const invoiceEvents = await getEventsOnDate(new Date());
-    for (const event of invoiceEvents) {
-      if (event.status === 'cancelled') continue;
-      if (!event.summary?.toUpperCase().includes('INVOICED')) continue;
-      const fields = extractFields(event, new Date().toISOString().slice(0, 10));
-      if (!fields) continue;
-      // Extract services from description
-      const desc = event.description || '';
-      const servicesMatch = desc.match(/📦 Services \/ Package:[\s\S]*?•\s*(.+)/);
-      await sendInvoiceEmail({
-        ...fields,
-        services: servicesMatch?.[1]?.trim() || '',
-        total: '', deposit: '', vat: '7.5',
-      });
       sent++;
     }
 
