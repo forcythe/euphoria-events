@@ -476,106 +476,124 @@ export async function sendReviewRequestEmail({ clientEmail, clientName, eventTyp
     }),
   });
 }
-
-export async function sendInvoiceEmail({ clientEmail, clientName, eventType, date, venue, services, total, vat, deposit }) {
+export async function sendInvoiceEmail({ clientEmail, clientName, eventType, date, venue, services, total, deposit, vat, notes }) {
   const RESEND_API_KEY = process.env.RESEND_API_KEY;
   if (!RESEND_API_KEY) return;
 
-  const formattedDate = new Date(date + 'T00:00:00').toLocaleDateString('en-NG', {
+  const formattedDate = date ? new Date(date + 'T00:00:00').toLocaleDateString('en-NG', {
     weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
-  });
-
-  const totalNum    = parseFloat(total)   || 0;
-  const depositNum  = parseFloat(deposit) || 0;
-  const vatRate     = parseFloat(vat)     || 7.5;
-  const vatAmount   = Math.round(totalNum * vatRate / 100);
-  const grandTotal  = totalNum + vatAmount;
-  const balance     = grandTotal - depositNum;
-  const serviceList = services ? services.split(',').filter(Boolean) : [];
+  }) : '';
 
   const today = new Date().toLocaleDateString('en-NG', { day: 'numeric', month: 'long', year: 'numeric' });
   const invoiceNo = `EE-${new Date().getFullYear()}${String(new Date().getMonth()+1).padStart(2,'0')}${String(new Date().getDate()).padStart(2,'0')}-${Math.floor(Math.random()*900)+100}`;
 
-  const invoiceUrl = `https://www.euphoria.events/invoice?name=${encodeURIComponent(clientName)}&email=${encodeURIComponent(clientEmail)}&date=${encodeURIComponent(date)}&eventType=${encodeURIComponent(eventType)}&venue=${encodeURIComponent(venue||'')}&services=${encodeURIComponent(services||'')}`;
+  const totalNum   = parseFloat(total)   || 0;
+  const depositNum = parseFloat(deposit) || 0;
+  const vatRate    = parseFloat(vat)     || 7.5;
+  const vatAmount  = Math.round(totalNum * vatRate / 100);
+  const grandTotal = totalNum + vatAmount;
+  const balance    = grandTotal - depositNum;
+  const serviceList = services ? services.split(',').filter(Boolean) : [];
+
+  const notesLines = (notes || 'Bank: Providus Bank\nAccount Number: 1307886609\nAccount Name: Perime Experiences Ltd\n\nPlease pay 30% deposit to confirm your booking. Balance is due 7 days before your event.')
+    .split('\n').map(line => {
+      const isBold = line.startsWith('Bank:') || line.startsWith('Account Number:') || line.startsWith('Account Name:');
+      return line ? `<p style="margin:2px 0;font-size:13px;color:#555;">${isBold ? `<strong>${line}</strong>` : line}</p>` : '<br/>';
+    }).join('');
 
   const html = `<!DOCTYPE html>
 <html>
-<body style="margin:0;padding:0;background:#04000A;font-family:Arial,sans-serif;color:#ffffff;">
-  <div style="max-width:600px;margin:0 auto;padding:40px 24px;">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#f0f0f0;font-family:Arial,sans-serif;">
+<div style="max-width:680px;margin:24px auto;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.12);">
 
-    <div style="text-align:center;margin-bottom:32px;">
-      <img src="https://euphoria.events/favicon.png" width="70" height="70" alt="Euphoria Events" style="border-radius:16px;" />
-      <h1 style="font-size:28px;letter-spacing:4px;margin:16px 0 4px;color:#FFD700;">EUPHORIA EVENTS</h1>
-      <p style="color:rgba(255,255,255,.4);font-size:12px;letter-spacing:2px;text-transform:uppercase;margin:0;">Invoice</p>
+  <!-- DARK HEADER -->
+  <div style="background:#0d0118;padding:36px 40px;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:20px;">
+    <div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+        <img src="https://euphoria.events/favicon.png" width="36" height="36" alt="Euphoria Events" style="border-radius:8px;" />
+        <span style="font-size:26px;font-weight:900;letter-spacing:4px;color:#FFD700;">EUPHORIA</span>
+      </div>
+      <p style="margin:0;font-size:12px;color:rgba(255,255,255,.4);letter-spacing:2px;">Events &bull; Lagos, Nigeria</p>
+      <p style="margin:4px 0 0;font-size:12px;color:rgba(255,255,255,.4);">booking@euphoria.events</p>
+      <p style="margin:2px 0 0;font-size:12px;color:rgba(255,255,255,.4);">+234 703 856 5517</p>
     </div>
+    <div style="text-align:right;">
+      <h2 style="font-size:32px;letter-spacing:4px;color:rgba(255,255,255,.15);margin:0 0 10px;">INVOICE</h2>
+      <p style="margin:2px 0;font-size:13px;color:rgba(255,255,255,.5);">Invoice No: <strong style="color:#FFD700;">${invoiceNo}</strong></p>
+      <p style="margin:2px 0;font-size:13px;color:rgba(255,255,255,.5);">Issue Date: <strong style="color:#FFD700;">${today}</strong></p>
+      ${formattedDate ? `<p style="margin:2px 0;font-size:13px;color:rgba(255,255,255,.5);">Event Date: <strong style="color:#FFD700;">${formattedDate}</strong></p>` : ''}
+    </div>
+  </div>
 
-    <div style="background:linear-gradient(135deg,rgba(255,215,0,.13),rgba(255,107,53,.13));border:1px solid rgba(255,215,0,.27);border-radius:20px;padding:28px;margin-bottom:24px;">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;">
-        <div>
-          <p style="margin:0;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.4);">Billed To</p>
-          <p style="margin:6px 0 0;font-size:18px;font-weight:700;color:#fff;">${clientName}</p>
-          <p style="margin:4px 0 0;font-size:13px;color:rgba(255,255,255,.5);">${clientEmail}</p>
-        </div>
-        <div style="text-align:right;">
-          <p style="margin:0;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.4);">Invoice No.</p>
-          <p style="margin:6px 0 0;font-size:16px;font-weight:700;color:#FFD700;">${invoiceNo}</p>
-          <p style="margin:4px 0 0;font-size:12px;color:rgba(255,255,255,.4);">${today}</p>
-        </div>
+  <!-- WHITE BODY -->
+  <div style="background:#fff;padding:36px 40px;">
+
+    <!-- Billed To / Event Details -->
+    <div style="display:flex;gap:32px;margin-bottom:32px;flex-wrap:wrap;">
+      <div style="flex:1;min-width:180px;">
+        <p style="margin:0 0 8px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#999;">Billed To</p>
+        <p style="margin:0;font-size:18px;font-weight:700;color:#000;">${clientName || '—'}</p>
+        <p style="margin:4px 0 0;font-size:13px;color:#555;">${clientEmail}</p>
+        ${venue ? `<p style="margin:4px 0 0;font-size:13px;color:#555;">${venue}</p>` : ''}
+      </div>
+      <div style="flex:1;min-width:180px;">
+        <p style="margin:0 0 8px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#999;">Event Details</p>
+        <p style="margin:0;font-size:18px;font-weight:700;color:#000;">${eventType || '—'}</p>
+        ${formattedDate ? `<p style="margin:4px 0 0;font-size:13px;color:#555;">${formattedDate}</p>` : ''}
+        ${venue ? `<p style="margin:4px 0 0;font-size:13px;color:#555;">${venue}</p>` : ''}
       </div>
     </div>
 
-    <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:24px;margin-bottom:24px;">
-      <h3 style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.4);margin:0 0 16px;">Event Details</h3>
-      <table style="width:100%;border-collapse:collapse;">
-        <tr><td style="padding:7px 0;color:rgba(255,255,255,.4);font-size:13px;">Date</td><td style="padding:7px 0;font-size:14px;font-weight:600;">${formattedDate}</td></tr>
-        <tr><td style="padding:7px 0;color:rgba(255,255,255,.4);font-size:13px;">Event</td><td style="padding:7px 0;font-size:14px;font-weight:600;">${eventType}</td></tr>
-        ${venue ? `<tr><td style="padding:7px 0;color:rgba(255,255,255,.4);font-size:13px;">Venue</td><td style="padding:7px 0;font-size:14px;font-weight:600;">${venue}</td></tr>` : ''}
-      </table>
+    <!-- Services Table -->
+    <table style="width:100%;border-collapse:collapse;margin-bottom:24px;">
+      <thead>
+        <tr style="background:#04000A;">
+          <th style="padding:10px 14px;text-align:left;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:#FFD700;">Service / Package</th>
+          <th style="padding:10px 14px;text-align:left;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:#FFD700;">Description</th>
+          <th style="padding:10px 14px;text-align:right;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:#FFD700;">Amount (&#8358;)</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${serviceList.map(s => `
+        <tr>
+          <td style="padding:12px 14px;font-size:14px;color:#333;border-bottom:1px solid #f0f0f0;">${s.trim()}</td>
+          <td style="padding:12px 14px;font-size:13px;color:#888;border-bottom:1px solid #f0f0f0;">Event media service</td>
+          <td style="padding:12px 14px;text-align:right;font-size:14px;color:#333;border-bottom:1px solid #f0f0f0;">—</td>
+        </tr>`).join('')}
+        ${totalNum > 0 ? `
+        <tr style="background:#f9f9f9;">
+          <td colspan="2" style="padding:12px 14px;font-size:14px;font-weight:700;color:#000;">Total Package</td>
+          <td style="padding:12px 14px;text-align:right;font-size:14px;font-weight:700;color:#000;">&#8358;${totalNum.toLocaleString()}</td>
+        </tr>` : ''}
+      </tbody>
+    </table>
+
+    <!-- Totals -->
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;margin-bottom:28px;">
+      <div style="display:flex;gap:48px;font-size:14px;color:#555;"><span>Subtotal</span><span style="min-width:120px;text-align:right;">&#8358;${totalNum.toLocaleString()}</span></div>
+      ${vatAmount > 0 ? `<div style="display:flex;gap:48px;font-size:14px;color:#555;"><span>VAT (${vatRate}%)</span><span style="min-width:120px;text-align:right;">&#8358;${vatAmount.toLocaleString()}</span></div>` : ''}
+      ${vatAmount > 0 ? `<div style="display:flex;gap:48px;font-size:14px;font-weight:600;color:#000;"><span>Total (incl. VAT)</span><span style="min-width:120px;text-align:right;">&#8358;${grandTotal.toLocaleString()}</span></div>` : ''}
+      <div style="display:flex;gap:48px;font-size:14px;color:#555;"><span>Deposit Paid</span><span style="min-width:120px;text-align:right;color:green;">- &#8358;${depositNum.toLocaleString()}</span></div>
+      <div style="display:flex;gap:48px;font-size:16px;font-weight:700;color:#000;border-top:2px solid #000;padding-top:8px;"><span>Balance Due</span><span style="min-width:120px;text-align:right;">&#8358;${balance.toLocaleString()}</span></div>
     </div>
 
-    <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;overflow:hidden;margin-bottom:24px;">
-      <table style="width:100%;border-collapse:collapse;">
-        <thead>
-          <tr style="background:#0d0118;">
-            <th style="padding:12px 16px;text-align:left;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:#FFD700;">Service</th>
-            <th style="padding:12px 16px;text-align:right;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:#FFD700;">Amount</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${serviceList.map((s, i) => `<tr><td style="padding:12px 16px;font-size:14px;color:rgba(255,255,255,.7);border-bottom:1px solid rgba(255,255,255,.05);">${s.trim()}</td><td style="padding:12px 16px;text-align:right;font-size:14px;color:rgba(255,255,255,.7);border-bottom:1px solid rgba(255,255,255,.05);">${i === 0 && totalNum > 0 ? '&#8358;' + totalNum.toLocaleString() : '—'}</td></tr>`).join('')}
-          ${totalNum > 0 ? `<tr style="background:rgba(255,215,0,.05);"><td style="padding:12px 16px;font-size:13px;color:rgba(255,255,255,.4);">VAT (${vatRate}%)</td><td style="padding:12px 16px;text-align:right;font-size:13px;color:rgba(255,255,255,.4);">&#8358;${vatAmount.toLocaleString()}</td></tr>` : ''}
-          ${grandTotal > 0 ? `<tr style="background:rgba(255,215,0,.08);"><td style="padding:14px 16px;font-size:15px;font-weight:700;color:#FFD700;">Total (incl. VAT)</td><td style="padding:14px 16px;text-align:right;font-size:15px;font-weight:700;color:#FFD700;">&#8358;${grandTotal.toLocaleString()}</td></tr>` : ''}
-          ${depositNum > 0 ? `<tr><td style="padding:12px 16px;font-size:13px;color:rgba(255,255,255,.4);">Deposit Paid</td><td style="padding:12px 16px;text-align:right;font-size:13px;color:#39FF14;">- &#8358;${depositNum.toLocaleString()}</td></tr>` : ''}
-          ${balance > 0 ? `<tr style="background:rgba(255,61,172,.08);"><td style="padding:14px 16px;font-size:15px;font-weight:700;color:#FF3CAC;">Balance Due</td><td style="padding:14px 16px;text-align:right;font-size:15px;font-weight:700;color:#FF3CAC;">&#8358;${balance.toLocaleString()}</td></tr>` : ''}
-        </tbody>
-      </table>
-    </div>
+    <!-- Notes -->
+    ${notes ? `
+    <div style="background:#fffbf0;border-left:3px solid #FFD700;padding:14px 18px;border-radius:4px;margin-bottom:24px;">
+      <strong style="font-size:13px;color:#333;">Payment Instructions / Notes:</strong>
+      <div style="margin-top:8px;">${notesLines}</div>
+    </div>` : ''}
 
-    <div style="background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.2);border-radius:16px;padding:20px;margin-bottom:24px;">
-      <p style="margin:0 0 10px;font-size:14px;font-weight:700;color:#FFD700;">Payment Details</p>
-      <p style="margin:0;font-size:14px;color:rgba(255,255,255,.7);line-height:1.8;">
-        <strong>Bank:</strong> Providus Bank<br/>
-        <strong>Account Number:</strong> 1307886609<br/>
-        <strong>Account Name:</strong> Perime Experiences Ltd
-      </p>
-    </div>
-
-    <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px;margin-bottom:24px;">
-      <p style="margin:0;font-size:13px;color:rgba(255,255,255,.5);font-style:italic;">Balance is due 7 days before your event. If you have already made full payment, please disregard the balance. Thank you!</p>
-    </div>
-
-    <div style="text-align:center;margin-bottom:24px;">
-      <a href="${invoiceUrl}" style="display:inline-block;background:linear-gradient(135deg,#FFD700,#FF6B35);color:#000;font-weight:700;font-size:14px;padding:14px 32px;border-radius:30px;text-decoration:none;">
-        View Full Invoice →
-      </a>
-    </div>
-
-    <div style="background:rgba(255,61,172,.08);border:1px solid rgba(255,61,172,.2);border-radius:16px;padding:20px;margin-bottom:24px;">
-      <p style="margin:0;font-size:14px;color:rgba(255,255,255,.7);">Questions? Call or WhatsApp <strong style="color:#FF3CAC;">+234 703 856 5517</strong> or email <strong style="color:#FF3CAC;">booking@euphoria.events</strong></p>
-    </div>
-
-    <p style="text-align:center;color:rgba(255,255,255,.25);font-size:12px;">Euphoria Events &bull; Lagos, Nigeria</p>
   </div>
+
+  <!-- DARK FOOTER -->
+  <div style="background:#04000A;padding:20px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+    <p style="margin:0;font-size:12px;color:rgba(255,255,255,.4);">Thank you for choosing <strong style="color:#FFD700;">Euphoria Events</strong> — we can&apos;t wait to capture your memories!</p>
+    <p style="margin:0;font-size:11px;color:rgba(255,255,255,.3);">euphoria.events</p>
+  </div>
+
+</div>
 </body>
 </html>`;
 
@@ -588,7 +606,7 @@ export async function sendInvoiceEmail({ clientEmail, clientName, eventType, dat
     body: JSON.stringify({
       from: 'Euphoria Events <booking@euphoria.events>',
       to: [clientEmail],
-      subject: `Your Invoice — ${eventType} on ${formattedDate}`,
+      subject: `Your Invoice — ${eventType}${formattedDate ? ' on ' + formattedDate : ''}`,
       html,
     }),
   });
