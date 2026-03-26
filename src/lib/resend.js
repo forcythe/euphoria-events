@@ -225,9 +225,9 @@ function ownerEmailHTML({ name, email, phone, date, eventType, venue, notes, ser
       <a href="https://www.euphoria.events/invoice?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone||'')}&date=${encodeURIComponent(date)}&eventType=${encodeURIComponent(eventType||'')}&venue=${encodeURIComponent(venue||'')}&services=${encodeURIComponent((services||[]).join(','))}" class="cta-btn" style="background:rgba(255,215,0,.15);border:1px solid rgba(255,215,0,.3);color:#FFD700;">
         Invoice
       </a>
-      ${calEventLink ? `<a href="${calEventLink}" class="cta-btn" style="background:linear-gradient(135deg,#00F5FF,#0057FF);color:#000;">
+      \${calEventLink ? \`<a href="\${calEventLink}" class="cta-btn" style="background:linear-gradient(135deg,#00F5FF,#0057FF);color:#000;">
         Calendar
-      </a>` : ''}` : ''}
+      </a>\` : ''}
     </div>
 
     <div class="notice">
