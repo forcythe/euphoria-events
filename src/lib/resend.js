@@ -222,18 +222,12 @@ function ownerEmailHTML({ name, email, phone, date, eventType, venue, notes, ser
     </div>
 
     <div class="cta-block" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-      <a href="https://www.euphoria.events/api/send-invoice?secret=${process.env.CRON_SECRET}&name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&date=${encodeURIComponent(date)}&eventType=${encodeURIComponent(eventType||'')}&venue=${encodeURIComponent(venue||'')}&services=${encodeURIComponent((services||[]).join(','))}" class="cta-btn" style="background:linear-gradient(135deg,#FFD700,#FF6B35);color:#000;">
-        Send Invoice →
-      </a>
       <a href="https://www.euphoria.events/invoice?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone||'')}&date=${encodeURIComponent(date)}&eventType=${encodeURIComponent(eventType||'')}&venue=${encodeURIComponent(venue||'')}&services=${encodeURIComponent((services||[]).join(','))}" class="cta-btn" style="background:rgba(255,215,0,.15);border:1px solid rgba(255,215,0,.3);color:#FFD700;">
-        Edit Invoice →
-      </a>
-      <a href="mailto:${email}?subject=${replySubject}" class="cta-btn" style="background:linear-gradient(135deg,#FF3CAC,#784BA0);">
-        Reply →
+        Invoice
       </a>
       ${calEventLink ? `<a href="${calEventLink}" class="cta-btn" style="background:linear-gradient(135deg,#00F5FF,#0057FF);color:#000;">
-        Calendar →
-      </a>` : ''}
+        Calendar
+      </a>` : ''}` : ''}
     </div>
 
     <div class="notice">
@@ -570,13 +564,13 @@ export async function sendInvoiceEmail({ clientEmail, clientName, eventType, dat
     </table>
 
     <!-- Totals -->
-    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;margin-bottom:28px;">
-      <div style="display:flex;gap:48px;font-size:14px;color:#555;"><span>Subtotal</span><span style="min-width:120px;text-align:right;">&#8358;${totalNum.toLocaleString()}</span></div>
-      ${vatAmount > 0 ? `<div style="display:flex;gap:48px;font-size:14px;color:#555;"><span>VAT (${vatRate}%)</span><span style="min-width:120px;text-align:right;">&#8358;${vatAmount.toLocaleString()}</span></div>` : ''}
-      ${vatAmount > 0 ? `<div style="display:flex;gap:48px;font-size:14px;font-weight:600;color:#000;"><span>Total (incl. VAT)</span><span style="min-width:120px;text-align:right;">&#8358;${grandTotal.toLocaleString()}</span></div>` : ''}
-      <div style="display:flex;gap:48px;font-size:14px;color:#555;"><span>Deposit Paid</span><span style="min-width:120px;text-align:right;color:green;">- &#8358;${depositNum.toLocaleString()}</span></div>
-      <div style="display:flex;gap:48px;font-size:16px;font-weight:700;color:#000;border-top:2px solid #000;padding-top:8px;"><span>Balance Due</span><span style="min-width:120px;text-align:right;">&#8358;${balance.toLocaleString()}</span></div>
-    </div>
+    <table style="width:100%;border-collapse:collapse;margin-bottom:28px;">
+      <tr><td style="padding:6px 14px;font-size:14px;color:#555;text-align:right;width:70%;">Subtotal</td><td style="padding:6px 14px;font-size:14px;color:#555;text-align:right;">&#8358;${totalNum.toLocaleString()}</td></tr>
+      ${vatAmount > 0 ? `<tr><td style="padding:6px 14px;font-size:14px;color:#555;text-align:right;">VAT (${vatRate}%)</td><td style="padding:6px 14px;font-size:14px;color:#555;text-align:right;">&#8358;${vatAmount.toLocaleString()}</td></tr>` : ''}
+      ${vatAmount > 0 ? `<tr><td style="padding:6px 14px;font-size:14px;font-weight:600;color:#000;text-align:right;">Total (incl. VAT)</td><td style="padding:6px 14px;font-size:14px;font-weight:600;color:#000;text-align:right;">&#8358;${grandTotal.toLocaleString()}</td></tr>` : ''}
+      <tr><td style="padding:6px 14px;font-size:14px;color:#555;text-align:right;">Deposit Paid</td><td style="padding:6px 14px;font-size:14px;color:green;text-align:right;">- &#8358;${depositNum.toLocaleString()}</td></tr>
+      <tr style="border-top:2px solid #000;"><td style="padding:10px 14px;font-size:16px;font-weight:700;color:#000;text-align:right;">Balance Due</td><td style="padding:10px 14px;font-size:16px;font-weight:700;color:#000;text-align:right;">&#8358;${balance.toLocaleString()}</td></tr>
+    </table>
 
     <!-- Notes -->
     ${notes ? `
