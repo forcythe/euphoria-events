@@ -222,8 +222,11 @@ function ownerEmailHTML({ name, email, phone, date, eventType, venue, notes, ser
     </div>
 
     <div class="cta-block" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-      <a href="https://www.euphoria.events/invoice?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone||'')}&date=${encodeURIComponent(date)}&eventType=${encodeURIComponent(eventType||'')}&venue=${encodeURIComponent(venue||'')}&services=${encodeURIComponent((services||[]).join(','))}" class="cta-btn" style="background:linear-gradient(135deg,#FFD700,#FF6B35);color:#000;">
-        Invoice →
+      <a href="https://www.euphoria.events/api/send-invoice?secret=${process.env.CRON_SECRET}&name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&date=${encodeURIComponent(date)}&eventType=${encodeURIComponent(eventType||'')}&venue=${encodeURIComponent(venue||'')}&services=${encodeURIComponent((services||[]).join(','))}" class="cta-btn" style="background:linear-gradient(135deg,#FFD700,#FF6B35);color:#000;">
+        Send Invoice →
+      </a>
+      <a href="https://www.euphoria.events/invoice?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone||'')}&date=${encodeURIComponent(date)}&eventType=${encodeURIComponent(eventType||'')}&venue=${encodeURIComponent(venue||'')}&services=${encodeURIComponent((services||[]).join(','))}" class="cta-btn" style="background:rgba(255,215,0,.15);border:1px solid rgba(255,215,0,.3);color:#FFD700;">
+        Edit Invoice →
       </a>
       <a href="mailto:${email}?subject=${replySubject}" class="cta-btn" style="background:linear-gradient(135deg,#FF3CAC,#784BA0);">
         Reply →
