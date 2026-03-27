@@ -75,7 +75,7 @@ function formatDate(dateStr) {
 
 // ── 1. Client confirmation email ─────────────────────────────────────
 
-function clientEmailHTML({ name, date, eventType, venue, services, phone, notes }) {
+function clientEmailHTML({ name, date, eventType, venue, services, phone, notes, startTime, endTime }) {
   const serviceItems = (services || []).map(s => `<span class="pill">${s}</span>`).join('');
 
   return `<!DOCTYPE html>
@@ -159,7 +159,7 @@ function clientEmailHTML({ name, date, eventType, venue, services, phone, notes 
 
 // ── 2. Owner notification email ───────────────────────────────────────
 
-function ownerEmailHTML({ name, email, phone, date, eventType, venue, notes, services, calEventLink }) {
+function ownerEmailHTML({ name, email, phone, date, eventType, venue, notes, services, calEventLink, startTime, endTime }) {
   const serviceItems = (services || []).map(s => `<span class="pill">${s}</span>`).join('');
   const replySubject = encodeURIComponent(`Re: Your Euphoria Events Booking — ${formatDate(date)}`);
 
@@ -202,6 +202,18 @@ function ownerEmailHTML({ name, email, phone, date, eventType, venue, notes, ser
       <div class="row">
         <span class="row-label">📅 Date</span>
         <span class="row-value" style="color:#39FF14;font-weight:700;">${formatDate(date)}</span>
+      </div>
+      ${startTime ? `<div class="row">
+        <span class="row-label">⏰ Time</span>
+        <span class="row-value">${startTime}${endTime ? ' — ' + endTime : ''}</span>
+      </div>` : ''}
+      <div class="row">
+      </div>
+      ${startTime ? `<div class="row">
+        <span class="row-label">⏰ Time</span>
+        <span class="row-value">${startTime}${endTime ? ' — ' + endTime : ''}</span>
+      </div>` : ''}
+      <div class="row">
       </div>
       <div class="row">
         <span class="row-label">🎉 Type</span>
@@ -252,7 +264,7 @@ function ownerEmailHTML({ name, email, phone, date, eventType, venue, notes, ser
 // ── Public: send both emails ──────────────────────────────────────────
 
 export async function sendBookingEmails({ booking, calEventLink }) {
-  const { name, email, phone, date, eventType, venue, notes, services } = booking;
+  const { name, email, phone, date, eventType, venue, notes, services, startTime, endTime } = booking;
   const results = { client: null, owner: null, errors: [] };
 
   // Client confirmation
@@ -262,7 +274,7 @@ export async function sendBookingEmails({ booking, calEventLink }) {
       to:      email,
       replyTo: NOTIFY_EMAIL,
       subject: `🎉 Booking Request Received — ${formatDate(date)}`,
-      html:    clientEmailHTML({ name, date, eventType, venue, services, phone, notes }),
+      html:    clientEmailHTML({ name, date, eventType, venue, services, phone, notes, startTime, endTime }),
     });
   } catch (err) {
     console.error('[resend] Client email failed:', err.message);
@@ -276,7 +288,7 @@ export async function sendBookingEmails({ booking, calEventLink }) {
       to:      NOTIFY_EMAIL,
       replyTo: email,
       subject: `⚡ New Booking — ${name} · ${formatDate(date)}`,
-      html:    ownerEmailHTML({ name, email, phone, date, eventType, venue, notes, services, calEventLink }),
+      html:    ownerEmailHTML({ name, email, phone, date, eventType, venue, notes, services, calEventLink, startTime, endTime }),
     });
   } catch (err) {
     console.error('[resend] Owner email failed:', err.message);

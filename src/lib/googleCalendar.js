@@ -205,12 +205,12 @@ export async function createBookingEvent(booking) {
     location:    booking.venue ? `${booking.venue} — ${mapsUrl}` : '',
     status:      'tentative', // shows as striped/pending in Google Calendar
     start: booking.startTime
-      ? { dateTime: `${booking.date}T${booking.startTime}:00`, timeZone: 'Africa/Lagos' }
+      ? { dateTime: `${booking.date}T${booking.startTime}:00+01:00` }
       : { date: booking.date },
     end: booking.endTime
-      ? { dateTime: `${booking.date}T${booking.endTime}:00`, timeZone: 'Africa/Lagos' }
+      ? { dateTime: `${booking.date}T${booking.endTime}:00+01:00` }
       : booking.startTime
-        ? { dateTime: `${booking.date}T${booking.startTime}:00`, timeZone: 'Africa/Lagos' }
+        ? { dateTime: `${booking.date}T${booking.startTime}:00+01:00` }
         : { date: booking.date },
     colorId:     '5',         // banana yellow = pending
     reminders: {
