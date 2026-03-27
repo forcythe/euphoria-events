@@ -177,6 +177,8 @@ export async function createBookingEvent(booking) {
   const description  = [
     `📋 BOOKING REQUEST — PENDING CONFIRMATION`,
     ``,
+    `⏰ Time:       ${booking.startTime ? booking.startTime + (booking.endTime ? ' — ' + booking.endTime : '') : 'Not specified'}`,
+    ``,
     `👤 Client:     ${booking.name}`,
     `📧 Email:      ${booking.email}`,
     `📞 Phone:      ${booking.phone || 'Not provided'}`,
@@ -202,8 +204,14 @@ export async function createBookingEvent(booking) {
     description,
     location:    booking.venue ? `${booking.venue} — ${mapsUrl}` : '',
     status:      'tentative', // shows as striped/pending in Google Calendar
-    start:       { date: booking.date },
-    end:         { date: booking.date },
+    start: booking.startTime
+      ? { dateTime: `${booking.date}T${booking.startTime}:00`, timeZone: 'Africa/Lagos' }
+      : { date: booking.date },
+    end: booking.endTime
+      ? { dateTime: `${booking.date}T${booking.endTime}:00`, timeZone: 'Africa/Lagos' }
+      : booking.startTime
+        ? { dateTime: `${booking.date}T${booking.startTime}:00`, timeZone: 'Africa/Lagos' }
+        : { date: booking.date },
     colorId:     '5',         // banana yellow = pending
     reminders: {
       useDefault: false,

@@ -49,7 +49,7 @@ export async function POST(request) {
       );
     }
 
-    const { date, name, email, phone, eventType, venue, notes, services, bookingType } = body;
+    const { date, name, email, phone, eventType, venue, notes, services, bookingType, startTime, endTime } = body;
 
     // Validation
     if (!date || !name || !email) {
@@ -82,6 +82,8 @@ export async function POST(request) {
 
     const bookingData = {
       date, name, email,
+      startTime:   startTime   || '',
+      endTime:     endTime     || '',
       phone:       phone       || '',
       eventType:   eventType   || '',
       venue:       venue       || '',

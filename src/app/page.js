@@ -421,7 +421,7 @@ function GalleryModal({ galleryId, onClose }) {
 // ─── PACKAGE BOOKING MODAL ────────────────────────────────────────────
 function PackageBookingModal({ pkg, onClose, blockedDates = [] }) {
   const [selectedDate, setSelectedDate] = useState(null);
-  const [form, setForm]   = useState({ name: '', email: '', phone: '', eventType: '', venue: '', notes: '' });
+  const [form, setForm]   = useState({ name: '', email: '', phone: '', eventType: '', venue: '', startTime: '', endTime: '', notes: '' });
   const [submitted, setSubmitted] = useState(false);
   const [agreed, setAgreed]       = useState(false);
   const [showTerms, setShowTerms] = useState(false);
@@ -487,6 +487,16 @@ function PackageBookingModal({ pkg, onClose, blockedDates = [] }) {
                 <div>
                   <label style={{ fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,.38)', marginBottom: 6, display: 'block', fontWeight: 600 }}>Venue / Address</label>
                   <VenueInput value={form.venue} onChange={v => setForm(p => ({ ...p, venue: v }))} />
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                  <div>
+                    <label style={{ fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,.38)', marginBottom: 6, display: 'block', fontWeight: 600 }}>Start Time</label>
+                    <input type="time" value={form.startTime} onChange={e => setForm(p => ({ ...p, startTime: e.target.value }))} style={{ ...inputStyle, colorScheme: 'dark' }} />
+                  </div>
+                  <div>
+                    <label style={{ fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,.38)', marginBottom: 6, display: 'block', fontWeight: 600 }}>End Time</label>
+                    <input type="time" value={form.endTime} onChange={e => setForm(p => ({ ...p, endTime: e.target.value }))} style={{ ...inputStyle, colorScheme: 'dark' }} />
+                  </div>
                 </div>
                 <div>
                   <label htmlFor="pkg-notes" style={{ fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,.38)', marginBottom: 6, display: 'block', fontWeight: 600 }}>Additional Notes</label>
@@ -576,7 +586,7 @@ export default function HomePage() {
   const [bookingTab, setBookingTab]     = useState('services');
   const [pkgModal, setPkgModal]         = useState(null);
   const [mobileMenu, setMobileMenu]     = useState(false);
-  const [form, setForm]                 = useState({ name: '', email: '', phone: '', eventType: '', venue: '', notes: '' });
+  const [form, setForm]                 = useState({ name: '', email: '', phone: '', eventType: '', venue: '', startTime: '', endTime: '', notes: '' });
   const [agreed, setAgreed]             = useState(false);
   const [showTerms, setShowTerms]       = useState(false);
   const [submitted, setSubmitted]       = useState(false);
@@ -1012,6 +1022,16 @@ export default function HomePage() {
                       <div>
                         <label style={{ fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,.38)', marginBottom: 7, display: 'block', fontWeight: 600 }}>Venue / Address</label>
                         <VenueInput value={form.venue} onChange={v => setForm(p => ({ ...p, venue: v }))} />
+                      </div>
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                        <div>
+                          <label style={{ fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,.38)', marginBottom: 7, display: 'block', fontWeight: 600 }}>Start Time</label>
+                          <input type="time" value={form.startTime} onChange={e => setForm(p => ({ ...p, startTime: e.target.value }))} style={{ ...inputStyle, colorScheme: 'dark' }} />
+                        </div>
+                        <div>
+                          <label style={{ fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,.38)', marginBottom: 7, display: 'block', fontWeight: 600 }}>End Time</label>
+                          <input type="time" value={form.endTime} onChange={e => setForm(p => ({ ...p, endTime: e.target.value }))} style={{ ...inputStyle, colorScheme: 'dark' }} />
+                        </div>
                       </div>
                       <div>
                         <label htmlFor="bk-notes" style={{ fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,.38)', marginBottom: 7, display: 'block', fontWeight: 600 }}>Additional Notes</label>
