@@ -48,6 +48,23 @@ export default function InvoicePage() {
 
   const serviceList = form.services ? form.services.split(',').filter(Boolean) : [];
 
+  const PRICE_MAP = {
+    'Spark': 550000, 'Spark Package': 550000,
+    'Euphoria': 1500000, 'Euphoria Package': 1500000,
+    'Ignite': 850000, 'Ignite Package': 850000,
+    '360° Camera Booth': 300000, '360 Booth': 300000, '360': 300000,
+    'Smile Camera Booth': 350000, 'Smile Booth': 350000, 'Smile': 350000,
+    'Audio & Video Guestbook': 300000, 'Audio Guestbook': 300000, 'Guestbook': 300000,
+    'Mobile Videography': 250000, 'Videography': 250000,
+  };
+
+  const getServicePrice = (s) => {
+    const key = s.trim();
+    if (PRICE_MAP[key]) return PRICE_MAP[key];
+    const found = Object.keys(PRICE_MAP).find(k => key.toLowerCase().includes(k.toLowerCase()));
+    return found ? PRICE_MAP[found] : 0;
+  };
+
   const PRICES = {
     // Packages
     'spark': 550000, 'Spark': 550000,
@@ -82,6 +99,8 @@ export default function InvoicePage() {
 
   const handlePrint = () => window.print();
 
+  const isBalanceReminder = parseFloat(form.deposit) > 0;
+
   const handleSendToClient = async () => {
     if (!form.email) { alert('Client email is required'); return; }
     setSending(true);
@@ -91,6 +110,7 @@ export default function InvoicePage() {
         name: form.name, email: form.email, date: form.date,
         eventType: form.eventType, venue: form.venue, services: form.services,
         total: form.total, deposit: form.deposit, vat: form.vat, notes: form.notes,
+        type: isBalanceReminder ? 'balance' : 'invoice',
       });
       const res = await fetch(`/api/send-invoice?${params}`);
       if (res.ok) { setSent(true); setTimeout(() => setSent(false), 4000); }
@@ -172,7 +192,7 @@ export default function InvoicePage() {
           <button className="btn btn-print" onClick={handlePrint}>Print / Save PDF →</button>
           <button className="btn" onClick={handleSendToClient} disabled={sending}
             style={{background: sent ? 'linear-gradient(135deg,#39FF14,#00C851)' : 'linear-gradient(135deg,#FF3CAC,#784BA0)', color: '#fff', opacity: sending ? .7 : 1}}>
-            {sending ? 'Sending...' : sent ? '✓ Sent to Client!' : 'Send to Client →'}
+            {sending ? 'Sending...' : sent ? '✓ Sent!' : isBalanceReminder ? 'Send Balance Reminder →' : 'Send Invoice →'}
           </button>
         </div>
 
@@ -274,18 +294,21 @@ export default function InvoicePage() {
                 </tr>
               </thead>
               <tbody>
-                {serviceList.length > 0 ? serviceList.map((s, i) => (
-                  <tr key={i}>
-                    <td>{s.trim()}</td>
-                    <td style={{color:'#888'}}>Event media service</td>
-                    <td style={{textAlign:'right'}}>—</td>
-                  </tr>
-                )) : (
+                {serviceList.length > 0 ? serviceList.map((s, i) => {
+                  const price = getServicePrice(s);
+                  return (
+                    <tr key={i}>
+                      <td>{s.trim()}</td>
+                      <td style={{color:'#888'}}>Event media service</td>
+                      <td style={{textAlign:'right'}}>{price > 0 ? `₦${price.toLocaleString()}` : '—'}</td>
+                    </tr>
+                  );
+                }) : (
                   <tr><td colSpan={3} style={{color:'#aaa',textAlign:'center'}}>No services listed</td></tr>
                 )}
-                {totalNum > 0 && (
+                {serviceList.length > 1 && totalNum > 0 && (
                   <tr style={{background:'#f9f9f9'}}>
-                    <td colSpan={2} style={{fontWeight:700}}>Total Package</td>
+                    <td colSpan={2} style={{fontWeight:700}}>Total</td>
                     <td style={{textAlign:'right',fontWeight:700}}>₦{totalNum.toLocaleString()}</td>
                   </tr>
                 )}

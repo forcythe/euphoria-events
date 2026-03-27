@@ -14,6 +14,7 @@ export async function GET(req) {
   const vat         = searchParams.get('vat')     || '7.5';
   const notes       = searchParams.get('notes')   || '';
   const secret      = searchParams.get('secret');
+  const type        = searchParams.get('type') || 'invoice';
 
   // Basic auth check
   if (secret !== process.env.CRON_SECRET) {
@@ -25,15 +26,32 @@ export async function GET(req) {
   }
 
   try {
-    await sendInvoiceEmail({
-      clientEmail,
-      clientName,
-      eventType: eventType || 'Event',
-      date:      date      || '',
-      venue:     venue     || '',
-      services:  services  || '',
-      total, deposit, vat, notes,
-    });
+    if (type === 'balance') {
+      const { sendBalanceReminderEmail } = await import('@/lib/resend');
+      const totalNum   = parseFloat(total)   || 0;
+      const depositNum = parseFloat(deposit) || 0;
+      const vatRate    = parseFloat(vat)     || 7.5;
+      const vatAmount  = Math.round(totalNum * vatRate / 100);
+      const grandTotal = totalNum + vatAmount;
+      const balance    = grandTotal - depositNum;
+      await sendBalanceReminderEmail({
+        clientEmail, clientName,
+        eventType: eventType || 'Event',
+        date:      date      || '',
+        venue:     venue     || '',
+        total:     String(grandTotal),
+        deposit:   String(depositNum),
+      });
+    } else {
+      await sendInvoiceEmail({
+        clientEmail, clientName,
+        eventType: eventType || 'Event',
+        date:      date      || '',
+        venue:     venue     || '',
+        services:  services  || '',
+        total, deposit, vat, notes,
+      });
+    }
 
     // Return a nice success page
     return new Response(`<!DOCTYPE html>

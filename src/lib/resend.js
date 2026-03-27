@@ -505,6 +505,22 @@ export async function sendInvoiceEmail({ clientEmail, clientName, eventType, dat
   const balance    = grandTotal - depositNum;
   const serviceList = services ? services.split(',').filter(Boolean) : [];
 
+  const PRICE_MAP = {
+    'Spark': 550000, 'Spark Package': 550000,
+    'Euphoria': 1500000, 'Euphoria Package': 1500000,
+    'Ignite': 850000, 'Ignite Package': 850000,
+    '360° Camera Booth': 300000, '360 Booth': 300000, '360': 300000,
+    'Smile Camera Booth': 350000, 'Smile Booth': 350000, 'Smile': 350000,
+    'Audio & Video Guestbook': 300000, 'Audio Guestbook': 300000, 'Guestbook': 300000,
+    'Mobile Videography': 250000, 'Videography': 250000,
+  };
+  const getServicePrice = (s) => {
+    const key = s.trim();
+    if (PRICE_MAP[key]) return PRICE_MAP[key];
+    const found = Object.keys(PRICE_MAP).find(k => key.toLowerCase().includes(k.toLowerCase()));
+    return found ? PRICE_MAP[found] : 0;
+  };
+
   const notesLines = (notes || 'Bank: Providus Bank\nAccount Number: 1307886609\nAccount Name: Perime Experiences Ltd\n\nPlease pay 30% deposit to confirm your booking. Balance is due 7 days before your event.')
     .split('\n').map(line => {
       const isBold = line.startsWith('Bank:') || line.startsWith('Account Number:') || line.startsWith('Account Name:');
@@ -565,12 +581,12 @@ export async function sendInvoiceEmail({ clientEmail, clientName, eventType, dat
         </tr>
       </thead>
       <tbody>
-        ${serviceList.map(s => `
+        ${serviceList.map(s => { const p = getServicePrice(s); return `
         <tr>
           <td style="padding:12px 14px;font-size:14px;color:#333;border-bottom:1px solid #f0f0f0;">${s.trim()}</td>
           <td style="padding:12px 14px;font-size:13px;color:#888;border-bottom:1px solid #f0f0f0;">Event media service</td>
-          <td style="padding:12px 14px;text-align:right;font-size:14px;color:#333;border-bottom:1px solid #f0f0f0;">—</td>
-        </tr>`).join('')}
+          <td style="padding:12px 14px;text-align:right;font-size:14px;color:#333;border-bottom:1px solid #f0f0f0;">${p > 0 ? '&#8358;' + p.toLocaleString() : '—'}</td>
+        </tr>`; }).join('')}
         ${totalNum > 0 ? `
         <tr style="background:#f9f9f9;">
           <td colspan="2" style="padding:12px 14px;font-size:14px;font-weight:700;color:#000;">Total Package</td>
