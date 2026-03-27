@@ -205,16 +205,8 @@ function ownerEmailHTML({ name, email, phone, date, eventType, venue, notes, ser
       </div>
       ${startTime ? `<div class="row">
         <span class="row-label">⏰ Time</span>
-        <span class="row-value">${startTime}${endTime ? ' — ' + endTime : ''}</span>
+        <span class="row-value">${formatTime(startTime)}${endTime ? ' — ' + formatTime(endTime) : ''}</span>
       </div>` : ''}
-      <div class="row">
-      </div>
-      ${startTime ? `<div class="row">
-        <span class="row-label">⏰ Time</span>
-        <span class="row-value">${startTime}${endTime ? ' — ' + endTime : ''}</span>
-      </div>` : ''}
-      <div class="row">
-      </div>
       <div class="row">
         <span class="row-label">🎉 Type</span>
         <span class="row-value">${eventType || 'Not specified'}</span>
