@@ -117,6 +117,10 @@ function clientEmailHTML({ name, date, eventType, venue, services, phone, notes,
         <span class="row-label">📅 Date</span>
         <span class="row-value">${formatDate(date)}</span>
       </div>
+      ${startTime ? `<div class="row">
+        <span class="row-label">⏰ Time</span>
+        <span class="row-value">${formatTime(startTime)}${endTime ? ' — ' + formatTime(endTime) : ''}</span>
+      </div>` : ''}
       <div class="row">
         <span class="row-label">🎉 Event</span>
         <span class="row-value">${eventType || 'Not specified'}</span>
