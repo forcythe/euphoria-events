@@ -48,6 +48,48 @@ export default function InvoicePage() {
 
   const serviceList = form.services ? form.services.split(',').filter(Boolean) : [];
 
+  // Per-service editable prices
+
+  const [servicePrices, setServicePrices] = useState({});
+
+  // When services change, auto-populate prices
+
+  useEffect(() => {
+
+    const updated = {};
+
+    serviceList.forEach(s => {
+
+      const key = s.trim();
+
+      if (servicePrices[key] !== undefined) {
+
+        updated[key] = servicePrices[key];
+
+      } else {
+
+        const p = getServicePrice(s);
+
+        updated[key] = p > 0 ? String(p) : '';
+
+      }
+
+    });
+
+    setServicePrices(updated);
+
+  }, [form.services]);
+
+  // Auto-update total when service prices change
+
+  useEffect(() => {
+
+    const total = Object.values(servicePrices).reduce((sum, p) => sum + (parseFloat(p) || 0), 0);
+
+    if (total > 0) setForm(f => ({...f, total: String(total)}));
+
+  }, [servicePrices]);
+
   const PRICE_MAP = {
     'Spark': 550000, 'Spark Package': 550000,
     'Euphoria': 1500000, 'Euphoria Package': 1500000,
@@ -109,6 +151,7 @@ export default function InvoicePage() {
         secret: 'euphoriacron123',
         name: form.name, email: form.email, date: form.date,
         eventType: form.eventType, venue: form.venue, services: form.services,
+        servicePrices: JSON.stringify(servicePrices),
         total: form.total, deposit: form.deposit, vat: form.vat, notes: form.notes,
         type: isBalanceReminder ? 'balance' : 'invoice',
       });
@@ -242,10 +285,29 @@ export default function InvoicePage() {
               <label>VAT (%)</label>
               <input type="number" value={form.vat} onChange={e => setForm(f => ({...f, vat: e.target.value}))} placeholder="7.5" step="0.1" />
             </div>
-            <div className="field">
-              <label>Services (comma separated)</label>
-              <input value={form.services} onChange={e => setForm(f => ({...f, services: e.target.value}))} placeholder="360 Booth, Smile Booth" />
+            <div className="field" style={{gridColumn: '1 / -1'}}>
+              <label>Services / Packages</label>
+              <input value={form.services} onChange={e => setForm(f => ({...f, services: e.target.value}))}
+                placeholder="e.g. 360° Camera Booth, Smile Booth" />
+              <div style={{fontSize:11, color:'rgba(255,255,255,.3)', marginTop:4}}>Separate multiple services with commas</div>
             </div>
+            {serviceList.length > 0 && (
+              <div className="field" style={{gridColumn: '1 / -1'}}>
+                <label>Service Prices (editable)</label>
+                <div style={{display:'flex', flexDirection:'column', gap:8}}>
+                  {serviceList.map(s => (
+                    <div key={s.trim()} style={{display:'flex', alignItems:'center', gap:10, background:'rgba(255,255,255,.04)', border:'1px solid rgba(255,255,255,.08)', borderRadius:10, padding:'8px 14px'}}>
+                      <span style={{flex:1, fontSize:14, color:'#fff'}}>{s.trim()}</span>
+                      <span style={{color:'rgba(255,255,255,.4)', fontSize:13}}>₦</span>
+                      <input type="number" value={servicePrices[s.trim()] || ''}
+                        onChange={e => setServicePrices(p => ({...p, [s.trim()]: e.target.value}))}
+                        placeholder="0"
+                        style={{width:130, background:'rgba(255,255,255,.07)', border:'1px solid rgba(255,255,255,.12)', borderRadius:8, padding:'6px 10px', color:'#FFD700', fontSize:14, fontWeight:600, textAlign:'right'}} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
           <div className="field" style={{marginTop: 14}}>
             <label>Notes / Payment Instructions</label>
@@ -295,7 +357,7 @@ export default function InvoicePage() {
               </thead>
               <tbody>
                 {serviceList.length > 0 ? serviceList.map((s, i) => {
-                  const price = getServicePrice(s);
+                  const price = parseFloat(servicePrices[s.trim()]) || getServicePrice(s);
                   return (
                     <tr key={i}>
                       <td>{s.trim()}</td>
