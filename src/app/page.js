@@ -713,16 +713,17 @@ export default function HomePage() {
 
         {/* ── ABOUT ── */}
         <section id="about" aria-label="About Euphoria Events" style={{ padding: '96px 36px', background: 'linear-gradient(to bottom,#08010F,#0d0118)' }}>
-          <div style={{ maxWidth: 1220, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center' }}
-            className="about-grid">
+          <div className="about-grid" style={{ maxWidth: 1220, margin: '0 auto' }}>
             <style>{`
               .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
               @media (max-width: 768px) {
-                .about-grid { grid-template-columns: 1fr; gap: 40px; }
-                .about-collage { height: 380px !important; }
-                .about-collage .main-img { width: 60% !important; height: 72% !important; }
-                .about-collage .secondary-img { width: 50% !important; height: 50% !important; }
-                .about-collage .float-card { transform: scale(0.85); }
+                .about-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
+                .about-collage { height: 380px !important; margin-bottom: 20px; }
+                .about-collage .main-img { width: 62% !important; height: 70% !important; }
+                .about-collage .secondary-img { width: 48% !important; height: 48% !important; }
+                .about-collage .float-card { transform: scale(0.9); }
+                .about-cta { flex-direction: column !important; }
+                .about-cta button { width: 100% !important; text-align: center !important; }
               }
               @keyframes floatA { 0%,100% { transform: translateY(0px) rotate(-2deg); } 50% { transform: translateY(-12px) rotate(2deg); } }
               @keyframes floatB { 0%,100% { transform: translateY(0px) rotate(2deg); } 50% { transform: translateY(-18px) rotate(-1deg); } }
@@ -770,7 +771,7 @@ export default function HomePage() {
 
 
               {/* CTA */}
-              <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
+              <div className="about-cta" style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
                 <button onClick={() => scrollTo('booking')}
                   style={{ background: 'linear-gradient(135deg,#FF3CAC,#784BA0)', border: 'none', color: '#fff', padding: '14px 32px', borderRadius: 30, fontSize: 14, fontWeight: 700, fontFamily: 'var(--font-dm)', cursor: 'pointer', letterSpacing: '0.05em' }}>
                   Book Your Event →
