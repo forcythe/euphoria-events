@@ -717,31 +717,44 @@ export default function HomePage() {
             className="about-grid">
             <style>{`
               .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-              @media (max-width: 768px) { .about-grid { grid-template-columns: 1fr; gap: 48px; } }
+
+              @media (max-width: 768px) {
+
+                .about-grid { grid-template-columns: 1fr; gap: 40px; }
+
+                .about-collage { height: 320px !important; }
+
+                .about-collage .float-card { display: none; }
+
+                .about-collage .main-img { width: 100% !important; height: 100% !important; }
+
+                .about-collage .secondary-img { display: none; }
+
+              }
               @keyframes floatA { 0%,100% { transform: translateY(0px) rotate(-2deg); } 50% { transform: translateY(-12px) rotate(2deg); } }
               @keyframes floatB { 0%,100% { transform: translateY(0px) rotate(2deg); } 50% { transform: translateY(-18px) rotate(-1deg); } }
               @keyframes floatC { 0%,100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
             `}</style>
 
             {/* Left — Visual collage */}
-            <div style={{ position: 'relative', height: 520 }}>
+            <div className="about-collage" style={{ position: 'relative', height: 520 }}>
               {/* Main image */}
-              <div style={{ position: 'absolute', top: 0, left: 0, width: '72%', height: '75%', borderRadius: 24, overflow: 'hidden', boxShadow: '0 32px 80px rgba(0,0,0,.6)', animation: 'floatA 6s ease-in-out infinite', border: '2px solid rgba(255,61,172,.2)' }}>
+              <div className="main-img" style={{ position: 'absolute', top: 0, left: 0, width: '72%', height: '75%', borderRadius: 24, overflow: 'hidden', boxShadow: '0 32px 80px rgba(0,0,0,.6)', animation: 'floatA 6s ease-in-out infinite', border: '2px solid rgba(255,61,172,.2)' }}>
                 <img src="https://res.cloudinary.com/dhahjsrtn/image/upload/v1773264400/Euphoria%20Events/PXL_20241130_161918346.PORTRAIT.ORIGINAL_pmrfml.jpg"
                   alt="Euphoria Events in action" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(8,1,15,.4) 0%, transparent 60%)' }} />
               </div>
               {/* Secondary image */}
-              <div style={{ position: 'absolute', bottom: 0, right: 0, width: '55%', height: '55%', borderRadius: 20, overflow: 'hidden', boxShadow: '0 24px 60px rgba(0,0,0,.5)', animation: 'floatB 7s ease-in-out infinite', border: '2px solid rgba(255,215,0,.2)' }}>
+              <div className="secondary-img" style={{ position: 'absolute', bottom: 0, right: 0, width: '55%', height: '55%', borderRadius: 20, overflow: 'hidden', boxShadow: '0 24px 60px rgba(0,0,0,.5)', animation: 'floatB 7s ease-in-out infinite', border: '2px solid rgba(255,215,0,.2)' }}>
                 <img src="https://res.cloudinary.com/dhahjsrtn/image/upload/v1773265341/Euphoria%20Events/BOS_1_zcfjyi.jpg"
                   alt="Euphoria Events gala" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
               {/* Floating stat cards */}
-              <div style={{ position: 'absolute', top: '42%', right: '-5%', background: 'rgba(13,1,24,.95)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,61,172,.3)', borderRadius: 16, padding: '14px 20px', boxShadow: '0 16px 40px rgba(255,61,172,.2)', animation: 'floatC 5s ease-in-out infinite', zIndex: 10 }}>
+              <div className="float-card" style={{ position: 'absolute', top: '42%', right: '-5%', background: 'rgba(13,1,24,.95)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,61,172,.3)', borderRadius: 16, padding: '14px 20px', boxShadow: '0 16px 40px rgba(255,61,172,.2)', animation: 'floatC 5s ease-in-out infinite', zIndex: 10 }}>
                 <div style={{ fontFamily: 'var(--font-bebas)', fontSize: 32, color: '#FF3CAC', lineHeight: 1 }}>200+</div>
                 <div style={{ fontSize: 11, color: 'rgba(255,255,255,.5)', letterSpacing: '0.1em', marginTop: 2 }}>Events Covered</div>
               </div>
-              <div style={{ position: 'absolute', top: '8%', right: '10%', background: 'rgba(13,1,24,.95)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,215,0,.3)', borderRadius: 16, padding: '12px 18px', boxShadow: '0 16px 40px rgba(255,215,0,.15)', animation: 'floatC 4s ease-in-out infinite .5s', zIndex: 10 }}>
+              <div className="float-card" style={{ position: 'absolute', top: '8%', right: '10%', background: 'rgba(13,1,24,.95)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,215,0,.3)', borderRadius: 16, padding: '12px 18px', boxShadow: '0 16px 40px rgba(255,215,0,.15)', animation: 'floatC 4s ease-in-out infinite .5s', zIndex: 10 }}>
                 <div style={{ fontFamily: 'var(--font-bebas)', fontSize: 28, color: '#FFD700', lineHeight: 1 }}>⭐ 5.0</div>
                 <div style={{ fontSize: 11, color: 'rgba(255,255,255,.5)', letterSpacing: '0.1em', marginTop: 2 }}>Google Rating</div>
               </div>
