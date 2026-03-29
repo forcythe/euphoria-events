@@ -717,24 +717,16 @@ export default function HomePage() {
             className="about-grid">
             <style>{`
               .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-
               @media (max-width: 768px) {
-
                 .about-grid { grid-template-columns: 1fr; gap: 40px; }
-
-                .about-collage { height: 320px !important; }
-
-                .about-collage .float-card { display: none; }
-
-                .about-collage .main-img { width: 100% !important; height: 100% !important; }
-
-                .about-collage .secondary-img { display: none; }
-
+                .about-collage { height: 380px !important; }
+                .about-collage .main-img { width: 60% !important; height: 72% !important; }
+                .about-collage .secondary-img { width: 50% !important; height: 50% !important; }
+                .about-collage .float-card { transform: scale(0.85); }
               }
               @keyframes floatA { 0%,100% { transform: translateY(0px) rotate(-2deg); } 50% { transform: translateY(-12px) rotate(2deg); } }
               @keyframes floatB { 0%,100% { transform: translateY(0px) rotate(2deg); } 50% { transform: translateY(-18px) rotate(-1deg); } }
-              @keyframes floatC { 0%,100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
-            `}</style>
+              @keyframes floatC { 0%,100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }`}</style>
 
             {/* Left — Visual collage */}
             <div className="about-collage" style={{ position: 'relative', height: 520 }}>
