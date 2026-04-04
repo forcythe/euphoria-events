@@ -592,11 +592,15 @@ export default function HomePage() {
   const [submitted, setSubmitted]       = useState(false);
   const [scrolled, setScrolled]         = useState(false);
   const [blockedDates, setBlockedDates]   = useState([]);
-  const [splash, setSplash] = useState(true);
+  const [splash, setSplash] = useState(false);
 
   useEffect(() => {
-    const t = setTimeout(() => setSplash(false), 1500);
-    return () => clearTimeout(t);
+    const isMob = window.innerWidth < 768;
+    if (!isMob) {
+      setSplash(true);
+      const t = setTimeout(() => setSplash(false), 1500);
+      return () => clearTimeout(t);
+    }
   }, []);
   const [submitting, setSubmitting]       = useState(false);
   const [submitError, setSubmitError]     = useState(null);
@@ -733,13 +737,13 @@ export default function HomePage() {
             <div className="about-collage" style={{ position: 'relative', height: 520 }}>
               {/* Main image */}
               <div className="main-img" style={{ position: 'absolute', top: 0, left: 0, width: '72%', height: '75%', borderRadius: 24, overflow: 'hidden', boxShadow: '0 32px 80px rgba(0,0,0,.6)', animation: 'floatA 6s ease-in-out infinite', border: '2px solid rgba(255,61,172,.2)' }}>
-                <img src="https://res.cloudinary.com/dhahjsrtn/image/upload/f_auto,q_50,w_600/v1773264400/Euphoria%20Events/PXL_20241130_161918346.PORTRAIT.ORIGINAL_pmrfml.jpg"
+                <img src="https://res.cloudinary.com/dhahjsrtn/image/upload/f_webp,q_40,w_500/v1773264400/Euphoria%20Events/PXL_20241130_161918346.PORTRAIT.ORIGINAL_pmrfml.jpg"
                   alt="Euphoria Events in action" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(8,1,15,.4) 0%, transparent 60%)' }} />
               </div>
               {/* Secondary image */}
               <div className="secondary-img" style={{ position: 'absolute', bottom: 0, right: 0, width: '55%', height: '55%', borderRadius: 20, overflow: 'hidden', boxShadow: '0 24px 60px rgba(0,0,0,.5)', animation: 'floatB 7s ease-in-out infinite', border: '2px solid rgba(255,215,0,.2)' }}>
-                <img src="https://res.cloudinary.com/dhahjsrtn/image/upload/f_auto,q_50,w_600/v1773265341/Euphoria%20Events/BOS_1_zcfjyi.jpg"
+                <img src="https://res.cloudinary.com/dhahjsrtn/image/upload/f_webp,q_40,w_500/v1773265341/Euphoria%20Events/BOS_1_zcfjyi.jpg"
                   alt="Euphoria Events gala" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
               {/* Floating stat cards */}
